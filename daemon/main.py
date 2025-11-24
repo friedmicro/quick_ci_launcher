@@ -54,6 +54,8 @@ def write_file(params):
         drive = os.environ["HOMEDRIVE"]
         home = os.environ["HOMEPATH"]
         path = path.replace("$home$", f"{drive}\\{home}\\Desktop")
+        if not os.path.exists(path):
+            path = path.replace("Desktop", "OneDrive\\Desktop")
         path = path.replace("/", "\\")
     print(path)
     contents = params["contents"]
