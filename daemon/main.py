@@ -30,13 +30,18 @@ def open_script(script_name):
     os_in_use = platform.system().lower()
     if "linux" in os_in_use:
         os_ext = ".sh"
+        trailing_slash = "/"
+        cmd_path = "/bin/bash"
     elif "win" in os_in_use:
         os_ext = ".bat"
+        trailing_slash = "\\"
+        cmd_path = "C:\\WINDOWS\\system32\\cmd.exe"
     else:
         print("Unsupported OS")
         return
-    script_full = f"./{script_name}{os_ext}"
-    subprocess.run(script_full, shell=True)
+    script_directory = os.getcwd()
+    script_full = f"{script_directory}{trailing_slash}{script_name}{os_ext}"
+    subprocess.run(script_full, shell=True, executable=cmd_path)
 
 
 def write_file(params):
