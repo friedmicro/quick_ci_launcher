@@ -13,29 +13,10 @@ for combination in combined_files:
 
     temp_list = []
     for key, item in output_json.items():
-        if "asset" in item:
-            json_item = {
-                "asset": item["asset"],
-                "name": key
-            }
-            if "ip" in item:
-                json_item["ip"] = item["ip"]
-            if "remote_client_path" in item:
-                json_item["remote_client_path"] = item["remote_client_path"][
-                    "remote_client_path"
-                ]
-            if "remote_client_type" in item:
-                json_item["remote_client_type"] = item["remote_client_type"][
-                    "remote_client_type"
-                ]
-            if "moonlight_app" in item:
-                json_item["moonlight_app"] = item["moonlight_app"]
-            if "start_script" in item:
-                json_item["start_script"] = item["start_script"]
-            if "stop_script" in item:
-                json_item["stop_script"] = item["stop_script"]
-            if "script" in item:
-                json_item["script"] = item["script"]
+        if "asset" in item or "emulator" in item or "script" in item:
+            json_item = {"name": key}
+            for setting in item:
+                json_item[setting] = item[setting]
             temp_list.append(json_item)
         else:
             temp_list.append({"name": key, "script": item})
@@ -47,7 +28,9 @@ for combination in combined_files:
         tmp_json[item["name"]] = item
         tmp_json[item["name"]]["time_limit"] = combined_files[combination]["time_limit"]
         if item["name"] in combined_files[combination]["time_exceptions"]:
-            tmp_json[item["name"]]["time_limit"] = not combined_files[combination]["time_limit"]
+            tmp_json[item["name"]]["time_limit"] = not combined_files[combination][
+                "time_limit"
+            ]
         del tmp_json[item["name"]]["name"]
 
     with open(combination, "w") as outfile:

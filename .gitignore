@@ -23,5 +23,7 @@ daemon/build
 daemon/initial_config.bin
 daemon/main.spec
 
+data
+
 !examples/*
 __pycache__

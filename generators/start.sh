@@ -20,6 +20,8 @@ for script in ./generators/types/*.py; do
     python "$script"
 done
 
+python3 ./scan_games.py
+
 # Merge respective generator files
 python3 ./generators/combine_partials.py
 python3 ./generators/combine.py
