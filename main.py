@@ -145,7 +145,7 @@ def time_counter_loop(args):
             subprocess.call(final_warning_hook, shell=True)
 
 
-def send_daemon_message(host, message_request):
+def send_daemon_message(host, message_request, timeout=None):
     PORT = 65432
 
     with open("initial_config.bin", "rb") as file_object:
@@ -154,6 +154,7 @@ def send_daemon_message(host, message_request):
     crypto_key = Fernet(encrypt_pass)
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.connect((host, PORT))
+        s.settimeout(timeout)
         message_body = json.dumps(message_request).encode()
         encrypted_message = crypto_key.encrypt(message_body)
         s.sendall(encrypted_message)
@@ -163,7 +164,7 @@ def send_daemon_message(host, message_request):
 
 
 def send_stop(host):
-    send_daemon_message(host, {"operation": "stop", "params": ""})
+    send_daemon_message(host, {"operation": "stop", "params": ""}, 10 * 60)
 
 
 def send_start(host):
