@@ -3,6 +3,7 @@ import os
 import LnkParse3
 
 from scanners.lib.config import read_json
+from scanners.lib.remote import form_remote_props
 
 windows_games = read_json("./config/windows_games.json")
 remote_config = read_json("./config/remote.json")
@@ -68,13 +69,6 @@ def parse_lnk(host):
                 arguments = lnk.get_json()["data"]["command_line_arguments"]
             contents = lnk_template(working_directory, target, arguments)
             games_json[program_name]["asset"] = write_asset(asset_name, contents)
-        games_json[program_name]["ip"] = remote_config[host]["ip"]
-        games_json[program_name]["start_script"] = remote_config[host]["start_script"]
-        games_json[program_name]["stop_script"] = remote_config[host]["stop_script"]
-        games_json[program_name]["script"] = ""
-        games_json[program_name]["moonlight_app"] = remote_config[host]["moonlight_app"]
-        games_json[program_name]["moonlight_machine"] = remote_config[host][
-            "moonlight_machine"
-        ]
+        form_remote_props(games_json, program_name, host)
 
     return games_json
