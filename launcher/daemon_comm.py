@@ -19,8 +19,7 @@ def send_daemon_message(host, message_request, timeout=None):
         message_body = json.dumps(message_request).encode()
         encrypted_message = crypto_key.encrypt(message_body)
         s.sendall(encrypted_message)
-        data = s.recv(1024)
-        print(f"Received from server: {data.decode('utf-8')}")
+        print("Sent to request to server")
         s.close()
 
 

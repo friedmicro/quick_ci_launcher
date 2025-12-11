@@ -119,9 +119,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             while True:
                 data = conn.recv(1024)
                 if not data:
-                    conn.close()
                     break
                 received_data += data
-                operation, params = process_message(received_data)
-                process_operation(operation, params)
-                conn.sendall(b"Server received your message!")
+            operation, params = process_message(received_data)
+            process_operation(operation, params)
+            conn.sendall(b"Server received your message!")
+            conn.close()
