@@ -5,6 +5,7 @@ from scanners.lib.config import write_json
 from scanners.lnk import parse_lnk
 from scanners.manual_remote import generate_manual
 from scanners.steam import parse_acf
+from scanners.web import generate_web_pages
 
 
 def parse_types(host, mode, file_type):
@@ -27,5 +28,6 @@ for host in os.listdir("./data"):
             autogen_json |= parse_types(host, mode, file_type)
 
 autogen_json |= parse_roms()
+autogen_json |= generate_web_pages()
 
 write_json("./generators/out/autogen.json", autogen_json)

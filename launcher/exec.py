@@ -1,6 +1,7 @@
 import datetime
 import multiprocessing
 import os
+import platform
 import subprocess
 import time
 
@@ -66,6 +67,22 @@ def launch_program(selected_item):
         asset = selected_item["asset"]
         emulator_exec = emulator_exec.replace("{rom_path}", asset)
         subprocess.run([emulator_exec], shell=True)
+    elif "web" in selected_item:
+        web_config = read_json("./config/web.json")
+        os_in_use = platform.system().lower()
+        if web_config["close_existing"]:
+            kill_exec = "killall " + web_config["browser"]
+            if "win" in os_in_use:
+                browser_binary = web_config["browser"].split("/")[-1]
+                kill_exec = "taskkill /IM " + browser_binary
+            subprocess.run([kill_exec], shell=True)
+            # Give the process time to gracefully close
+            time.sleep(2)
+        browser_exec = web_config["browser"] + " "
+        if web_config["kiosk"]:
+            browser_exec += "--kiosk "
+        browser_exec += selected_item["web"]
+        subprocess.run([browser_exec], shell=True)
     elif "asset" in selected_item:
         start_thread = multiprocessing.Process(
             target=send_start, args=(selected_item["ip"],)

@@ -13,7 +13,7 @@ for combination in combined_files:
 
     temp_list = []
     for key, item in output_json.items():
-        if "asset" in item or "emulator" in item or "script" in item:
+        if "asset" in item or "emulator" in item or "script" in item or "web" in item:
             json_item = {"name": key}
             for setting in item:
                 json_item[setting] = item[setting]
