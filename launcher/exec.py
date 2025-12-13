@@ -60,9 +60,9 @@ def execute_program_with_time_logging(selected_item):
 def launch_program(selected_item):
     if selected_item["script"] != "":
         subprocess.run([selected_item["script"]])
-    if "emulator" in selected_item:
+    elif "emulator" in selected_item:
         emulator_config = read_json("./config/emulators.json")
-        emulator_exec = emulator_config[selected_item["emulator"]]
+        emulator_exec = emulator_config["exec"][selected_item["emulator"]]
         asset = selected_item["asset"]
         emulator_exec = emulator_exec.replace("{rom_path}", asset)
         subprocess.run([emulator_exec], shell=True)
