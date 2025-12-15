@@ -12,6 +12,8 @@ time_configuration = read_json("time_config.json")
 
 def is_item_time_whitelisted(selected_item):
     now = datetime.datetime.now()
+    if "time_schedule" not in selected_item:
+        return False
     schedule = selected_item["time_schedule"]
     schedule_day = schedule["day"]
     schedule_start_hour = schedule["start_time"].split(":")[0]
