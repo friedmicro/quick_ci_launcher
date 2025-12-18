@@ -48,6 +48,9 @@ def os_path_replace(path):
         # Assume this is running under your user account on Linux
         username = getpass.getuser()
         path = path.replace("$home$", f"/home/{username}")
+    elif "darwin" in os_in_use:
+        username = getpass.getuser()
+        path = path.replace("$home$", f"/Users/{username}")
     elif "win" in os_in_use:
         # Window environment variables
         drive = os.environ["HOMEDRIVE"]

@@ -1,4 +1,5 @@
 import os
+import platform
 
 import scanners.lib.script
 import scanners.lib.template
@@ -58,6 +59,13 @@ def form_game_template(game, host, mode):
         return """{launch_command} steam://rungameid/{app_id}""".format(
             launch_command=launch_command, app_id=game["app_id"]
         )
+    elif os_in_use == "darwin":
+        return """{shebang}
+{launch_command} steam://rungameid/{app_id}""".format(
+            shebang=scanners.lib.template.zsh(),
+            launch_command=launch_command,
+            app_id=game["app_id"],
+        )
 
 
 def parse_acf(host, mode):
@@ -67,10 +75,15 @@ def parse_acf(host, mode):
     for game in games_native:
         script_template = form_game_template(game, host, mode)
         output_json[game["name"]] = {}
-        output_json[game["name"]]["asset"] = scanners.lib.script.write(
-            game["app_id"], script_template, "remote"
-        )
-        output_json[game["name"]]["script"] = ""
-        form_remote_props(output_json, game["name"], host)
+        if host == "local":
+            output_json[game["name"]]["script"] = scanners.lib.script.write(
+                game["app_id"], script_template, "local"
+            )
+        else:
+            output_json[game["name"]]["asset"] = scanners.lib.script.write(
+                game["app_id"], script_template, "remote"
+            )
+            output_json[game["name"]]["script"] = ""
+            form_remote_props(output_json, game["name"], host)
 
     return output_json
