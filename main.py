@@ -3,6 +3,7 @@ import os
 from functools import partial
 
 from launcher.exec import setup_and_launch
+from launcher.filter import clear_out_of_scope
 from launcher.lib.config import read_json
 from launcher.time_keep import validate_whitelisted_days
 
@@ -89,6 +90,7 @@ def main(app_data, stdscr):
 
 
 menu_topology = read_json("config.json")
+menu_topology = clear_out_of_scope(menu_topology)
 
 app_data = {
     "row_line": 0,
