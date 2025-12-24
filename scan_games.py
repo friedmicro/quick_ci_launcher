@@ -10,10 +10,11 @@ from daemon.lib.scanner import find_steam_acf_files
 from scanners.emulators import parse_roms
 from scanners.lib.config import read_json, write_json
 from scanners.lnk import parse_lnk
-from scanners.manual_remote import generate_manual
+from scanners.manual import generate_manual_local, generate_manual_remote
 from scanners.steam import parse_acf
 from scanners.waydroid import generate_waydroid
 from scanners.web import generate_web_pages
+from launcher.launch_preferences import merge_based_on_props
 
 
 def parse_types(host, mode, file_type):
@@ -23,7 +24,7 @@ def parse_types(host, mode, file_type):
         case "lnk":
             return parse_lnk(host)
         case "manual":
-            return generate_manual(host)
+            return generate_manual_remote(host)
         case _:
             print("Type not defined, may be mistyped.")
             return {}
@@ -36,8 +37,8 @@ local_path = "./data/local"
 shutil.rmtree(local_path, ignore_errors=True)
 os.mkdir(local_path)
 os.mkdir(local_path + "/acf")
-acfs = []
 for location in steam_locations:
+    acfs = []
     location_path = location["path"]
     acfs += find_steam_acf_files(location_path)
     os.mkdir(local_path + "/acf/" + location["mode"])
@@ -80,8 +81,10 @@ autogen_json = {}
 for host in os.listdir("./data"):
     for file_type in os.listdir("./data/" + host):
         for mode in os.listdir("./data/" + host + "/" + file_type):
-            autogen_json |= parse_types(host, mode, file_type)
+            parsed_json = parse_types(host, mode, file_type)
+            autogen_json = merge_based_on_props(autogen_json, parsed_json)
 
+autogen_json |= generate_manual_local()
 autogen_json |= parse_roms()
 autogen_json |= generate_web_pages()
 autogen_json |= generate_waydroid()
