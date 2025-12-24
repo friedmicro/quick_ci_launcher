@@ -18,6 +18,6 @@ def generate_manual_local():
     local_configs = read_json("./config/local.json")
     output_json = {}
     for game in local_configs:
-        script_path, _ = scanners.lib.script.get_script_path(game, "local")
+        script_path, _ = scanners.lib.script.get_script_path(local_configs[game], "local")
         output_json[game] = {"script": script_path}
     return output_json
