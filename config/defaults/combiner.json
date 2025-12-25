@@ -1,0 +1,8 @@
+{
+  "./generators/out/games.json": {
+    "files": ["./generators/out/autogen.json", "./config/overrides.json"],
+    "time_limit": true,
+    "time_exceptions": [],
+    "time_exceptions_schedule": {}
+  }
+}

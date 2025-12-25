@@ -1,0 +1,4 @@
+{
+    "id": "my_machine",
+    "local_overrides_entire": ["./config/android.json", "./config/combiner.json", "./config/local.json", "./config/overrides.json"]
+}

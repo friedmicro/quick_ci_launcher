@@ -1,0 +1,39 @@
+{
+  "local": {
+    "os": "",
+    "native": "",
+    "flatpak": "",
+    "locations": []
+  },
+  "linux": {
+    "os": "linux",
+    "native": "steam",
+    "flatpak": "flatpak run com.valvesoftware.Steam",
+    "locations": [
+      { "path": "~/.steam/steam/steamapps", "mode": "native" },
+      {
+        "path": "~/.var/app/com.valvesoftware.Steam/.steam/steam/steamapps",
+        "mode": "flatpak"
+      }
+    ]
+  },
+  "windows": {
+    "os": "windows",
+    "native": "C:\\\\Program Files (x86)\\Steam\\Steam.exe",
+    "locations": [
+      { "path": "C:\\Program Files (x86)\\Steam\\steamapps", "mode": "native" }
+    ]
+  },
+  "darwin": {
+    "os": "darwin",
+    "native": "open -a steam --args",
+    "locations": [
+      {
+        "path": "~/Library/Application Support/Steam/steamapps",
+        "mode": "native"
+      }
+    ]
+  },
+  "remapping": {},
+  "exclude": []
+}

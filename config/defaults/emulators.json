@@ -1,0 +1,41 @@
+{
+  "registered_emulators": [],
+  "paths": {
+    "ares": "",
+    "dolphin": "",
+    "mgba": "",
+    "melon": ""
+  },
+  "scan": {
+    "ares": true,
+    "dolphin": true,
+    "mgba": false,
+    "melon": false
+  },
+  "extensions": {
+    "ares": ["n64"],
+    "dolphin": ["iso", "wbfs"],
+    "mgba": ["gba", "sgb", "gb"],
+    "melon": ["nds"]
+  },
+  "is_single_file": {
+    "ares": false,
+    "dolphin": false,
+    "mgba": true,
+    "melon": true
+  },
+  "truncate_sequence": {
+    "ares": "",
+    "dolphin": " [",
+    "mgba": "",
+    "melon": ""
+  },
+  "exec": {
+    "ares": "{exec_command} \"{rom_path}\"",
+    "dolphin": "{exec_command} -e \"{rom_path}\"",
+    "mgba": "{exec_command} \"{rom_path}\"",
+    "melon": "{exec_command} \"{rom_path}\""
+  },
+  "remapping": {},
+  "selected": []
+}

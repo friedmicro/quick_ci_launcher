@@ -1,0 +1,6 @@
+{
+  "browser": "firefox",
+  "close_existing": false,
+  "kiosk": true,
+  "games": {}
+}

@@ -9,7 +9,7 @@ from launcher.daemon_comm import send_asset, send_start, send_stop
 from launcher.lib.config import read_json, write_json
 from launcher.time_keep import is_item_time_whitelisted, time_counter_loop
 
-time_configuration = read_json("time_config.json")
+time_configuration = read_json("./config/time_config.json")
 time_ledger = read_json("time.json")
 
 

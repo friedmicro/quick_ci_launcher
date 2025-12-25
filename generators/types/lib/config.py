@@ -10,6 +10,8 @@ def read_json(path):
         client_config = json.load(file)
         client_id = client_config["id"]
         entire_overrides = client_config["local_overrides_entire"]
+    if not os.path.exists(path):
+        return {}
     with open(path, 'r') as file:
         global_config = json.load(file)
     client_path = path.replace("./config/", "./config/clients/" + client_id + "/")
