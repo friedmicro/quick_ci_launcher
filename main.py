@@ -3,7 +3,6 @@ import math
 import os
 import shutil
 from functools import partial
-from sys import stderr
 
 from launcher.exec import setup_and_launch
 from launcher.filter import clear_out_of_scope
