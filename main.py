@@ -1,6 +1,9 @@
 import curses
+import math
 import os
+import shutil
 from functools import partial
+from sys import stderr
 
 from launcher.exec import setup_and_launch
 from launcher.filter import clear_out_of_scope
@@ -9,66 +12,75 @@ from launcher.time_keep import validate_whitelisted_days
 
 
 def render_table(app_data, stdscr):
+    _, lines_max = shutil.get_terminal_size()
     row_line = app_data["row_line"]
     menu_topology = app_data["menu_topology"]
 
     stdscr.clear()
 
     for i, key in enumerate(menu_topology):
+        page_offset = app_data["page"] * lines_max
+        if i < page_offset:
+            continue
+        if i == lines_max - page_offset:
+            break
         if row_line == i:
-            stdscr.addstr(i, 0, "--> " + key + " <--", curses.A_STANDOUT)
+            stdscr.addstr(i - page_offset, 0, "--> " + key + " <--", curses.A_STANDOUT)
         else:
-            stdscr.addstr(i, 0, key)
+            stdscr.addstr(i - page_offset, 0, key)
 
     app_data["row_count"] = len(menu_topology)
 
 
 def redraw_line(app_data, stdscr):
+    _, lines_max = shutil.get_terminal_size()
+    page_offset = app_data["page"] * lines_max
     row_line = app_data["row_line"]
     row_count = app_data["row_count"]
-    if row_line != 0:
-        stdscr.move(row_line - 1, 0)
+    if row_line - page_offset != 0:
+        stdscr.move(row_line - 1 - page_offset, 0)
         stdscr.clrtoeol()
         top_line = list(app_data["menu_topology"].keys())[row_line - 1]
-        stdscr.addstr(row_line - 1, 0, top_line)
+        stdscr.addstr(row_line - 1 - page_offset, 0, top_line)
 
     selected_line = list(app_data["menu_topology"].keys())[row_line]
-    stdscr.addstr(row_line, 0, "--> " + selected_line + " <--", curses.A_STANDOUT)
+    stdscr.addstr(
+        row_line - page_offset, 0, "--> " + selected_line + " <--", curses.A_STANDOUT
+    )
 
-    if row_line != row_count - 1:
-        stdscr.move(row_line + 1, 0)
+    if row_line != row_count - 1 and row_line != lines_max - 1:
+        stdscr.move(row_line + 1 - page_offset, 0)
         stdscr.clrtoeol()
         bottom_line = list(app_data["menu_topology"].keys())[row_line + 1]
-        stdscr.addstr(row_line + 1, 0, bottom_line)
+        stdscr.addstr(row_line + 1 - page_offset, 0, bottom_line)
 
 
 def main(app_data, stdscr):
-    row_line = app_data["row_line"]
-    row_count = app_data["row_count"]
-
     render_table(app_data, stdscr)
+    redraw_line(app_data, stdscr)
 
     while True:
-        row_count = app_data["row_count"]
+        row_line = app_data["row_line"]
+        previous_page = app_data["page"]
 
         curses.curs_set(0)
 
-        redraw_line(app_data, stdscr)
-
         user_input = stdscr.get_wch()
+        _, lines_max = shutil.get_terminal_size()
 
         if user_input == curses.KEY_DOWN:
             row_line += 1
-            if row_line >= row_count:
-                row_line = row_count - 1
+            app_data["row_line"] = row_line
+            app_data["page"] = math.floor(row_line / lines_max)
         elif user_input == curses.KEY_UP:
             row_line -= 1
-            if row_line < 0:
-                row_line = 0
+            app_data["row_line"] = row_line
+            app_data["page"] = math.floor(row_line / lines_max)
         # This is the escape key
         elif user_input == "\x1b":
             app_data["menu_topology"] = app_data["prior_menu_topology"]
             render_table(app_data, stdscr)
+            continue
         elif user_input == "q":
             app_data["should_exit"] = True
         # 10 is enter if not a number pad
@@ -82,8 +94,22 @@ def main(app_data, stdscr):
                 break
             else:
                 render_table(app_data, stdscr)
+                continue
 
-        app_data["row_line"] = row_line
+        # User scrolled past in either direction, reset them to the first item
+        if app_data["row_line"] < 0 or app_data["row_line"] >= len(
+            app_data["menu_topology"]
+        ):
+            app_data["row_line"] = 0
+            app_data["page"] = 0
+            render_table(app_data, stdscr)
+            redraw_line(app_data, stdscr)
+            continue
+
+        if previous_page != app_data["page"]:
+            render_table(app_data, stdscr)
+        else:
+            redraw_line(app_data, stdscr)
 
         if app_data["should_exit"]:
             break
@@ -93,6 +119,7 @@ menu_topology = read_json("config.json")
 menu_topology = clear_out_of_scope(menu_topology)
 
 app_data = {
+    "page": 0,
     "row_line": 0,
     "should_exit": False,
     "row_count": len(menu_topology),
