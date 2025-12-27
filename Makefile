@@ -1,8 +1,12 @@
 build: clean
 	pyinstaller athena-ncurses.py
-	mv dist/athena-ncurses/_internal dist/
-	mv dist/athena-ncurses/athena-ncurses dist/athena
-	rm -rf dist/main
+	pyinstaller scan_games.py
+	mv dist/athena-ncurses dist/athena
+	mv dist/athena/athena-ncurses dist/athena/athena
+	mv dist/scan_games dist/scanner
+	mv dist/scanner/scan_games dist/scanner/scanner
+	pyinstaller generators/combine.py
+	pyinstaller generators/combine_partials.py
 
 build-test: build
 	./generators/start.sh
