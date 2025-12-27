@@ -20,6 +20,10 @@ daemon/build
 daemon/initial_config.bin
 daemon/main.spec
 
+athena-ncurses.spec
+dist
+build
+
 data
 config.json
 time.json
