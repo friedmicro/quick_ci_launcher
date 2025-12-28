@@ -1,5 +1,7 @@
 # This file is here to generate the athena config
-#
+# This is preferable over a shell script due to the complexity and because we want to
+# have support across multiple OSes, this binary will run when a user wants to update the athena
+# config
 import os
 import shutil
 import subprocess
