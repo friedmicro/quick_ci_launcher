@@ -4,8 +4,6 @@ rm -rf ./scripts/dist/remote
 rm -rf ./scripts/dist/assets
 
 mkdir -p ./scripts/generated_local
-mkdir -p ./scripts/generated_local/init
-mkdir -p ./scripts/generated_local/cleanup
 mkdir -p ./scripts/generated_remote
 mkdir -p ./scripts/dist/local
 mkdir -p ./scripts/dist/remote

@@ -1,4 +1,5 @@
 build: clean
+	pyinstaller ./generators/generator.py
 	pyinstaller athena-ncurses.py
 	pyinstaller scan_games.py
 	mv dist/athena-ncurses dist/athena

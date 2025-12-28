@@ -8,6 +8,7 @@
 generators/*
 !generators/combine_partials.py
 !generators/combine.py
+!generators/generator.py
 !generators/start.sh
 !generators/types/
 generators/types/*

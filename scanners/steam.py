@@ -1,5 +1,4 @@
 import os
-import platform
 
 import scanners.lib.script
 import scanners.lib.template

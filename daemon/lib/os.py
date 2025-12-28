@@ -1,6 +1,7 @@
 import getpass
 import os
 import platform
+import shutil
 import subprocess
 
 
@@ -60,3 +61,21 @@ def os_path_replace(path):
             path = path.replace("Desktop", "OneDrive\\Desktop")
         path = path.replace("/", "\\")
     return path
+
+
+# Recursively copy and create tree of directories\files
+def copy_all_contents(src, dest):
+    for filename in os.listdir(src):
+        src_file = src + "/" + filename
+        dest_file = dest + "/" + filename
+        if os.path.isdir(src_file):
+            os.mkdir(dest_file)
+            copy_all_contents(src_file, dest_file)
+            return
+        shutil.copyfile(src_file, dest_file)
+
+
+# mkdir -p: create if does not exist, continue if is does
+def mkdirp(target):
+    if not os.path.exists(target):
+        os.mkdir(target)
