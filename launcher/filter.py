@@ -16,10 +16,15 @@ def clear_out_of_scope(menu_topology):
     waydroid_not_installed = result.returncode != 0
 
     for game in menu_topology["Games"]:
-        if "local_script" in menu_topology["Games"][game]:
+        if "hidden" in menu_topology and menu_topology["hidden"]:
+            continue
+        elif "local_script" in menu_topology["Games"][game]:
             games[game] = menu_topology["Games"][game]
         elif "layer" in menu_topology["Games"][game]:
-            if menu_topology["Games"][game]["layer"] == "waydroid" and waydroid_not_installed:
+            if (
+                menu_topology["Games"][game]["layer"] == "waydroid"
+                and waydroid_not_installed
+            ):
                 continue
         elif "ip" in menu_topology["Games"][game]:
             live_ip = menu_topology["Games"][game]["live_check"]
