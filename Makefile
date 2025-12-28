@@ -12,7 +12,11 @@ build-test: build
 	./generators/start.sh
 
 build-test-ui: build-test
-	./dist/athena
+	./dist/athena/athena
+
+virtual-env:
+	pyenv install 3.13.7
+	pyenv virtualenv 3.13.7 athena
 
 deps:
 	pip install pyinstaller

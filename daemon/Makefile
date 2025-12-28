@@ -18,6 +18,10 @@ build-test-unix: build-test
 	scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r dist/* ${REMOTE_USER}@${REMOTE_IP}:${REMOTE_PATH}
 	ssh -t -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${REMOTE_USER}@${REMOTE_IP} "sudo systemctl restart athena"
 
+virtual-env:
+	pyenv install 3.13.7
+	pyenv virtualenv 3.13.7 athena
+
 deps:
 	pip install pyinstaller
 	pip install cryptography
