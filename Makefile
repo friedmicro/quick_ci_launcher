@@ -10,7 +10,7 @@ build: clean
 	pyinstaller generators/combine_partials.py
 
 build-test: build
-	./generators/start.sh
+	./dist/generator/generator
 
 build-test-ui: build-test
 	./dist/athena/athena
