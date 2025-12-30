@@ -66,11 +66,11 @@ if generator_config["partials_enabled"]:
     subprocess.run([generator_config["combine_path"]])
 
 # Copy generated files
-copy_all_contents("./scripts/generated_local", "./scripts/dist/local")
-copy_all_contents("./scripts/manual_local", "./scripts/dist/local")
-copy_all_contents("./scripts/generated_remote", "./scripts/dist/remote")
-copy_all_contents("./scripts/manual_remote", "./scripts/dist/remote")
-copy_all_contents("./scripts/assets", "./scripts/dist/assets")
+copy_all_contents("./scripts/generated_local", "./scripts/dist/local", True)
+copy_all_contents("./scripts/manual_local", "./scripts/dist/local", True)
+copy_all_contents("./scripts/generated_remote", "./scripts/dist/remote", True)
+copy_all_contents("./scripts/manual_remote", "./scripts/dist/remote", True)
+copy_all_contents("./scripts/assets", "./scripts/dist/assets", True)
 
 # If configured cleanup old files
 if not generator_config["keep_temp"]:

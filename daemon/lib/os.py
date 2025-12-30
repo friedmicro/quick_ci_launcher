@@ -64,15 +64,17 @@ def os_path_replace(path):
 
 
 # Recursively copy and create tree of directories\files
-def copy_all_contents(src, dest):
+def copy_all_contents(src, dest, set_executable):
     for filename in os.listdir(src):
         src_file = src + "/" + filename
         dest_file = dest + "/" + filename
         if os.path.isdir(src_file):
             os.mkdir(dest_file)
-            copy_all_contents(src_file, dest_file)
+            copy_all_contents(src_file, dest_file, set_executable)
             return
         shutil.copyfile(src_file, dest_file)
+        if set_executable:
+            os.chmod(dest_file, 0o775)
 
 
 # mkdir -p: create if does not exist, continue if is does
