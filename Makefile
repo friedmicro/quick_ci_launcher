@@ -1,9 +1,10 @@
 build: clean
 	pyinstaller ./generators/generator.py
 	pyinstaller athena-ncurses.py
+	pyinstaller athena-cli.py
 	pyinstaller scan_games.py
-	mv dist/athena-ncurses dist/athena
-	mv dist/athena/athena-ncurses dist/athena/athena
+	mv dist/athena-cli dist/athena
+	mv dist/athena/athena-cli dist/athena/athena
 	mv dist/scan_games dist/scanner
 	mv dist/scanner/scan_games dist/scanner/scanner
 	pyinstaller generators/combine.py
