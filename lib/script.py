@@ -1,0 +1,1 @@
+../generators/types/lib/script.py

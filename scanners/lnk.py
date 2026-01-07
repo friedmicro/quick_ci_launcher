@@ -2,20 +2,19 @@ import os
 
 import LnkParse3
 
-from scanners.lib.config import read_json
-from scanners.lib.remote import form_remote_props
+from config_lib.athena import AthenaConfig
+from config_lib.windows_games import WindowsGamesConfig
 
-windows_games = read_json("./config/windows_games.json")
-remote_config = read_json("./config/remote.json")
-windows_exclusions = windows_games["exclude"]
-open_steam_direct = windows_games["open_steam_direct"]
+windows_games = WindowsGamesConfig()
+windows_exclusions = windows_games.fetch_exclude()
+open_steam_direct = windows_games.fetch_open_steam_direct()
 
 
 # Because Steam doesn't use lnk files.
 def steam_template(program_name, url_destination):
-    steam_path = windows_games["steam_path"]
+    steam_path = windows_games.fetch_steam_path()
     if program_name in open_steam_direct:
-        return f'"{windows_games["steam_path"]}"'
+        return f'"{windows_games.fetch_steam_path()}"'
     return f"""\"{steam_path}\" {url_destination}
 """.format(steam_path=steam_path, url_destination=url_destination)
 
@@ -38,15 +37,15 @@ def parse_lnk(host):
     games_json = {}
     directory_path = "./data/" + host + "/lnk/native"
     entries = os.listdir(directory_path)
+    athena_config = AthenaConfig()
     for file_name in entries:
         program_name = file_name.split(".")[0]
         asset_name = program_name + ".bat"
         if program_name in windows_exclusions:
             continue
-        if ".url" in file_name or ".lnk" in file_name:
-            games_json[program_name] = {}
-        else:
+        if not (".url" in file_name or ".lnk" in file_name):
             continue
+        asset_path = ""
         if ".url" in file_name:
             with open(f"{directory_path}/{file_name}", "r") as file:
                 lines = file.readlines()
@@ -56,9 +55,7 @@ def parse_lnk(host):
                             continue
                         url_destination = line.split("URL=")[1].strip()
                         contents = steam_template(program_name, url_destination)
-                        games_json[program_name]["asset"] = write_asset(
-                            asset_name, contents
-                        )
+                        asset_path = write_asset(asset_name, contents)
         elif ".lnk" in file_name:
             lnk_file = open(f"{directory_path}/{file_name}", "rb")
             lnk = LnkParse3.lnk_file(lnk_file)
@@ -68,7 +65,7 @@ def parse_lnk(host):
             if "command_line_arguments" in lnk.get_json()["data"]:
                 arguments = lnk.get_json()["data"]["command_line_arguments"]
             contents = lnk_template(working_directory, target, arguments)
-            games_json[program_name]["asset"] = write_asset(asset_name, contents)
-        form_remote_props(games_json, program_name, host)
+            asset_path = write_asset(asset_name, contents)
+        games_json[program_name] = athena_config.generate_remote(asset_path, host)
 
     return games_json

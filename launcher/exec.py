@@ -5,6 +5,10 @@ import platform
 import subprocess
 import time
 
+from config_lib.athena import AthenaConfigItem
+from config_lib.remote import RemoteConfig
+from config_lib.web import WebConfig
+from launcher.config_lib.emulators import EmulatorConfig
 from launcher.daemon_comm import send_asset, send_start, send_stop
 from launcher.lib.config import read_json, write_json
 from launcher.time_keep import is_item_time_whitelisted, time_counter_loop
@@ -58,67 +62,66 @@ def execute_program_with_time_logging(selected_item):
         write_json("time.json", time_ledger)
 
 
-def launch_program(selected_item):
-    if selected_item["script"] != "":
-        subprocess.run([selected_item["script"]])
-    elif "emulator" in selected_item:
-        emulator_config = read_json("./config/emulators.json")
-        emulator_exec = emulator_config["exec"][selected_item["emulator"]]
-        asset = selected_item["asset"]
-        emulator_exec = emulator_exec.replace("{rom_path}", asset)
+def launch_program(selected_item: AthenaConfigItem):
+    if selected_item.has_script_override():
+        subprocess.run([selected_item.script])
+    elif selected_item.is_emulator():
+        emulator_config = EmulatorConfig().fetch_emulator(selected_item.emulator)
+        asset = selected_item.asset
+        emulator_exec = emulator_config.exec.replace("{rom_path}", asset)
         subprocess.run([emulator_exec], shell=True)
-    elif "layer" in selected_item:
-        if selected_item["layer"] == "waydroid":
+    elif selected_item.is_layer():
+        if selected_item.is_waydroid():
             subprocess.run(
-                ["waydroid app launch " + selected_item["asset"] + " &"], shell=True
+                ["waydroid app launch " + selected_item.asset + " &"], shell=True
             )
-    elif "web" in selected_item:
-        web_config = read_json("./config/web.json")
+    elif selected_item.is_web():
+        web_config = WebConfig()
         os_in_use = platform.system().lower()
-        if web_config["close_existing"]:
-            kill_exec = "killall " + web_config["browser"]
+        if web_config.fetch_close_existing():
+            kill_exec = "killall " + web_config.fetch_browser()
             if "win" in os_in_use:
-                browser_binary = web_config["browser"].split("/")[-1]
+                browser_binary = web_config.fetch_browser().split("/")[-1]
                 kill_exec = "taskkill /IM " + browser_binary
             subprocess.run([kill_exec], shell=True)
             # Give the process time to gracefully close
             time.sleep(2)
-        browser_exec = web_config["browser"] + " "
-        if web_config["kiosk"]:
+        browser_exec = web_config.fetch_browser() + " "
+        if web_config.fetch_kiosk():
             browser_exec += "--kiosk "
-        browser_exec += selected_item["web"]
+        browser_exec += selected_item.web
         subprocess.run([browser_exec], shell=True)
-    elif "asset" in selected_item:
+    elif selected_item.is_remote():
         start_thread = multiprocessing.Process(
-            target=send_start, args=(selected_item["ip"],)
+            target=send_start, args=(selected_item.ip,)
         )
         start_thread.start()
         asset_thread = multiprocessing.Process(
             target=send_asset,
             args=(
-                selected_item["ip"],
-                selected_item["asset"],
-                selected_item["os"],
+                selected_item.ip,
+                selected_item.asset,
+                selected_item.os,
             ),
         )
         asset_thread.start()
-        remote_config = read_json("./config/remote.json")
-        remote_type = selected_item["remote_client_type"]
-        if remote_type == "moonlight":
+        remote_config = RemoteConfig()
+        if selected_item.remote_client_type == "moonlight":
             moonlight_command = (
-                remote_config["defaults"]["moonlight_client_path"]
+                remote_config.fetch_defaults()["moonlight_client_path"]
                 + " stream "
-                + selected_item["moonlight_machine"]
+                + selected_item.moonlight_machine
                 + " "
-                + selected_item["moonlight_app"]
+                + selected_item.moonlight_app
             )
             subprocess.run([moonlight_command], shell=True)
-        send_stop(selected_item["ip"])
+        send_stop(selected_item.ip)
 
 
 def setup_and_launch(is_logging_time, selected_item):
-    if "start_script" in selected_item and selected_item["start_script"] != "":
-        subprocess.run([selected_item["start_script"]], shell=True)
+    selected_item = AthenaConfigItem(selected_item)
+    if selected_item.has_start_script():
+        subprocess.run([selected_item.start_script], shell=True)
     if is_logging_time:
         if is_item_time_whitelisted(selected_item):
             launch_program(selected_item)
@@ -126,5 +129,5 @@ def setup_and_launch(is_logging_time, selected_item):
             execute_program_with_time_logging(selected_item)
     else:
         launch_program(selected_item)
-    if "stop_script" in selected_item and selected_item["stop_script"] != "":
-        subprocess.run([selected_item["stop_script"]], shell=True)
+    if selected_item.has_stop_script():
+        subprocess.run([selected_item.stop_script], shell=True)

@@ -2,15 +2,14 @@ import os
 
 import scanners.lib.script
 import scanners.lib.template
-from scanners.lib.config import read_json
-from scanners.lib.remote import form_remote_props
+from config_lib.athena import AthenaConfig
+from config_lib.steam import SteamConfig
 
-remote_config = read_json("./config/remote.json")
-steam_config = read_json("./config/steam.json")
+steam_config = SteamConfig()
 
 
 def search_exclusions(name):
-    for exclusion in steam_config["exclude"]:
+    for exclusion in steam_config.fetch_exclude():
         if exclusion in name:
             return True
     return False
@@ -32,8 +31,8 @@ def locate_games(steam_location):
                 if app_id != None and name != None:
                     break
         # Rename a few games that have odd names
-        if name in steam_config["remapping"]:
-            name = steam_config["remapping"][name]
+        if name in steam_config.fetch_remapping():
+            name = steam_config.fetch_remapping()[name]
         if search_exclusions(name):
             continue
         game = {"app_id": app_id, "name": name}
@@ -45,8 +44,8 @@ output_json = {}
 
 
 def form_game_template(game, host, mode):
-    os_in_use = steam_config[host]["os"]
-    launch_command = steam_config[host][mode]
+    os_in_use = steam_config.fetch_host(host).os
+    launch_command = steam_config.fetch_host(host)[mode]
     if os_in_use == "linux":
         return """{shebang}
 {launch_command} steam://rungameid/{app_id}""".format(
@@ -71,18 +70,19 @@ def parse_acf(host, mode):
     steam_native = "./data/" + host + "/acf/" + mode
     games_native = locate_games(steam_native)
 
+    athena_config = AthenaConfig()
     for game in games_native:
         script_template = form_game_template(game, host, mode)
         output_json[game["name"]] = {}
         if host == "local":
-            output_json[game["name"]]["script"] = scanners.lib.script.write(
+            script_path = scanners.lib.script.write(
                 game["app_id"], script_template, "local"
             )
+            output_json[game["name"]] = athena_config.generate_script(script_path)
         else:
-            output_json[game["name"]]["asset"] = scanners.lib.script.write(
+            asset_path = scanners.lib.script.write(
                 game["app_id"], script_template, "remote"
             )
-            output_json[game["name"]]["script"] = ""
-            form_remote_props(output_json, game["name"], host)
+            output_json[game["name"]] = athena_config.generate_remote(asset_path, host)
 
     return output_json

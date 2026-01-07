@@ -1,12 +1,11 @@
-from scanners.lib.config import read_json
+from config_lib.athena import AthenaConfig
+from config_lib.web import WebConfig
 
 
 def generate_web_pages():
     output_json = {}
-    manual_config_path = "./config/web.json"
-    games = read_json(manual_config_path)["games"]
+    athena_config = AthenaConfig()
+    games = WebConfig().fetch_programs()
     for game in games:
-        # Let's just ping google here
-        check_domain = "google.com"
-        output_json[game] = {"script": "", "web": games[game], "ip": check_domain, "live_check": check_domain}
+        output_json[game] = athena_config.generate_web(games[game])
     return output_json

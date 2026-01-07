@@ -1,5 +1,6 @@
 import subprocess
 
+from config_lib.athena import AthenaConfigItem
 from launcher.lib.remote import ping_ip
 
 
@@ -16,25 +17,22 @@ def clear_out_of_scope(menu_topology):
     waydroid_not_installed = result.returncode != 0
 
     for game in menu_topology["Games"]:
-        if "hidden" in menu_topology and menu_topology["hidden"]:
+        athena_item = AthenaConfigItem(menu_topology["Games"][game])
+        if athena_item.is_hidden():
             continue
-        elif "local_script" in menu_topology["Games"][game]:
+        elif athena_item.has_local_script():
             games[game] = menu_topology["Games"][game]
-        elif "layer" in menu_topology["Games"][game]:
-            if (
-                menu_topology["Games"][game]["layer"] == "waydroid"
-                and waydroid_not_installed
-            ):
+        elif athena_item.is_layer():
+            if athena_item.is_waydroid() and waydroid_not_installed:
                 continue
-        elif "ip" in menu_topology["Games"][game]:
-            live_ip = menu_topology["Games"][game]["live_check"]
-            if live_ip in ips_offline:
+        elif athena_item.has_ip():
+            if athena_item.live_check in ips_offline:
                 continue
-            if live_ip not in ips_online:
-                if ping_ip(live_ip):
-                    ips_online.append(live_ip)
+            if athena_item.live_check not in ips_online:
+                if ping_ip(athena_item.live_check):
+                    ips_online.append(athena_item.live_check)
                 else:
-                    ips_offline.append(live_ip)
+                    ips_offline.append(athena_item.live_check)
                     continue
             games[game] = menu_topology["Games"][game]
         else:
