@@ -25,6 +25,9 @@ deps:
 	pip install cryptography
 	pip install LnkParse3
 
+dep-windows: deps
+	pip install windows-curses
+
 clean:
 	rm -rf build
 	rm -rf dist
