@@ -1,0 +1,7 @@
+{
+  "steam_apps_location_windows": "C:\\Program Files (x86)\\Steam\\steamapps",
+  "steam_apps_location_linux": "~/.steam/steam/steamapps",
+  "steam_apps_location_flatpak": "~/.var/app/com.valvesoftware.Steam/.steam/steam/steamapps",
+  "steam_apps_location_mac": "~/Library/Application Support/Steam/steamapps",
+  "shortcut_path": "$home$\\Desktop"
+}

@@ -22,6 +22,7 @@ build
 
 data
 config.json
+!daemon/config.json
 time.json
 
 __pycache__
