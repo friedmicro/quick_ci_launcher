@@ -8,6 +8,7 @@ from launcher.exec import setup_and_launch
 from launcher.filter import clear_out_of_scope
 from launcher.lib.config import read_json
 from launcher.time_keep import validate_whitelisted_days
+from config_lib.install import create_initial_configs, InstallConfig
 
 
 def render_table(app_data, stdscr):
@@ -113,6 +114,8 @@ def main(app_data, stdscr):
         if app_data["should_exit"]:
             break
 
+
+create_initial_configs(InstallConfig())
 
 menu_topology = read_json("config.json")
 menu_topology = clear_out_of_scope(menu_topology)

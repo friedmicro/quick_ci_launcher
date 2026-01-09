@@ -3,6 +3,7 @@ import sys
 from launcher.exec import setup_and_launch
 from launcher.lib.config import read_json
 from launcher.time_keep import validate_whitelisted_days
+from config_lib.install import create_initial_configs, InstallConfig
 
 
 def flatten_config(config):
@@ -47,4 +48,5 @@ def process_user_input():
     setup_and_launch(is_logging_time, program_args)
 
 
+create_initial_configs(InstallConfig())
 process_user_input()

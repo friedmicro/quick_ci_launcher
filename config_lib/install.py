@@ -1,15 +1,41 @@
-# TODO: This is a stub to be worked out later
+import os
+import platform
 
-def create_intial_configs():
+from config_lib.steam import SteamConfig
+from lib.os import copy_all_contents
+from daemon.lib.comm import auth
+
+
+class InstallConfig:
+    def __init__(self) -> None:
+        pass
+
+
+# Create the initial configs for athena if they do not exist
+# we assume you are calling this at least once. This can be an empty object.
+# If you don't want to configure anything (or if the user didn't provide it).
+# Force will revert to factory settings!
+def create_initial_configs(install_config: InstallConfig, force: bool = False, skip_generator: bool = False):
+    os_in_use = platform.system().lower()
     print("Assuming this is the first run of athena; creating default configs")
 
-    # Copy defaults to config/
-    # Run game scanner to auto-populate everything from local first, this will give the user a menu of options
-    # Populate OS in use to local
-    # Generate initial daemon credential file
+    if not force and os.path.exists("./config/client.json"):
+        return
+
+    copy_all_contents("./config/defaults", "./config", False, True)
+
+    steam_config = SteamConfig()
+    local_steam = steam_config.fetch_host(os_in_use)
+    steam_config.update_host("local", local_steam)
+
+    if not skip_generator:
+        generator_config = GeneratorConfig()
+        subprocess.run([generator_config.scanner_path], check=True)
+
+    auth()
 
     # We assume the developer will need to populate each config file as desired; utility code to do this
-    # will live in config_lib 
+    # will live in config_lib
     # Of note:
     # Android: Android games, requires the Android APK name and WayDroid installed (Linux only feature)
     # Client: Machine ID and advanced config logic
