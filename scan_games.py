@@ -61,7 +61,7 @@ for host in remote_config.fetch_remotes_to_load():
     host_name = remote_host.ip
     if "start_script" in remote_host:
         subprocess.run([remote_host.start_script])
-    data = str(request_from_daemon("lair.friedmicro-lab.org", request_body))
+    data = str(request_from_daemon(remote_host.ip, request_body))
     with open("assets.zip", "wb") as file:
         file.write(base64.b64decode(data))
     with zipfile.ZipFile("assets.zip", "r") as zip:
