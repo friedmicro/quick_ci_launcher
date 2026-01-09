@@ -7,7 +7,7 @@ from lib.config import read_json, write_json
 class WindowsGamesConfig:
     manual_config_path = "./config/windows_games.json"
 
-    def __init__(self, is_client):
+    def __init__(self, is_client=False):
         self.config = read_json(self.manual_config_path, is_client)
         self.is_client = is_client
 

@@ -39,7 +39,7 @@ class SteamHostConfig(dict):
 class SteamConfig:
     manual_config = "./config/steam.json"
 
-    def __init__(self, is_client):
+    def __init__(self, is_client=False):
         self.config_data = read_json(self.manual_config, is_client)
         self.is_client = is_client
 

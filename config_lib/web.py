@@ -4,7 +4,7 @@ from lib.config import read_json, write_json
 class WebConfig:
     manual_config = "./config/web.json"
 
-    def __init__(self, is_client):
+    def __init__(self, is_client=False):
         self.config = read_json(self.manual_config, is_client)
         self.is_client = is_client
 
