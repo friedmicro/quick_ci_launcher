@@ -161,8 +161,7 @@ class AthenaConfig:
             {"emulator": emulator, "script": "", "asset": file_path}
         )
 
-    def generate_web(self, url):
-        check_domain = "google.com"
+    def generate_web(self, url, check_domain):
         return AthenaConfigItem(
             {"script": "", "web": url, "ip": check_domain, "live_check": check_domain}
         )
