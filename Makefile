@@ -10,6 +10,15 @@ build: clean
 	pyinstaller generators/combine.py
 	pyinstaller generators/combine_partials.py
 
+dev-ncurses:
+	python3 athena-ncurses.py
+
+dev-cli:
+	python3 athena-cli.py
+
+dev-scanner:
+	python3 scan_games.py
+
 build-test: build
 	./dist/generator/generator
 
