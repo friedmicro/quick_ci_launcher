@@ -63,6 +63,9 @@ def move_to_upload(process_steam, process_shortcut):
             move_steam_files_to_upload(
                 daemon_config["steam_apps_location_flatpak"], "flatpak"
             )
+    elif "darwin" in os_in_use:
+        if not process_steam:
+            move_steam_files_to_upload(daemon_config["steam_apps_location_mac"])
     elif "win" in os_in_use:
         if not process_steam:
             move_steam_files_to_upload(daemon_config["steam_apps_location_windows"])

@@ -18,6 +18,9 @@ def open_script(script_name):
     if "linux" in os_in_use:
         os_ext = ".sh"
         cmd_path = "/bin/bash"
+    elif "darwin" in os_in_use:
+        os_ext = ".sh"
+        cmd_path = "/bin/zsh"
     elif "win" in os_in_use:
         os_ext = ".bat"
         cmd_path = "C:\\WINDOWS\\system32\\cmd.exe"
