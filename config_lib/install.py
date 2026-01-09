@@ -1,9 +1,11 @@
 import os
 import platform
+import subprocess
 
 from config_lib.steam import SteamConfig
 from lib.os import copy_all_contents
 from daemon.lib.comm import auth
+from config_lib.client import GeneratorConfig
 
 
 class InstallConfig:
