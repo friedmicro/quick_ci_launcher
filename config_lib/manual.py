@@ -9,8 +9,9 @@ class ManualConfig:
     manual_config = "./config/manual.json"
     target_config = "config.json"
 
-    def __init__(self) -> None:
-        self.raw_data = read_json(self.manual_config)
+    def __init__(self, is_client=False) -> None:
+        self.raw_data = read_json(self.manual_config, is_client)
+        self.is_client = is_client
 
     def copy_config(self, client_id):
         shutil.copyfile(self.manual_config, self.target_config)
@@ -35,4 +36,4 @@ class ManualConfig:
         self.write_to_file()
 
     def write_to_file(self) -> None:
-        write_json(self.manual_config, self.raw_data)
+        write_json(self.manual_config, self.raw_data, self.is_client)

@@ -37,8 +37,9 @@ class RemoteHostConfig(dict):
 class RemoteConfig:
     manual_config_path = "./config/remote.json"
 
-    def __init__(self) -> None:
-        self.config_data = read_json(self.manual_config_path)
+    def __init__(self, is_client=False) -> None:
+        self.config_data = read_json(self.manual_config_path, is_client)
+        self.is_client = is_client
         pass
 
     def fetch_hosts(self):
@@ -51,11 +52,11 @@ class RemoteConfig:
     def add_host(self, host_name, host_config):
         self.config_data["hosts"].append(host_name)
         self.config_data[host_name] = host_config
-        write_json(self.manual_config_path, self.config_data)
+        write_json(self.manual_config_path, self.config_data, self.is_client)
 
     def update_host(self, host_name, host_config):
         self.config_data[host_name] = host_config
-        write_json(self.manual_config_path, self.config_data)
+        write_json(self.manual_config_path, self.config_data, self.is_client)
 
     def fetch_scan_options(self):
         scan_options = self.config_data["scan_options"]
@@ -63,7 +64,7 @@ class RemoteConfig:
 
     def update_scan_options(self, scan_options):
         self.config_data["scan_options"] = scan_options
-        write_json(self.manual_config_path, self.config_data)
+        write_json(self.manual_config_path, self.config_data, self.is_client)
 
     def fetch_remotes_to_load(self):
         remotes_to_load = self.config_data["remotes_to_load"]
@@ -71,7 +72,7 @@ class RemoteConfig:
 
     def update_remotes_to_load(self, remotes_to_load):
         self.config_data["remotes_to_load"] = remotes_to_load
-        write_json(self.manual_config_path, self.config_data)
+        write_json(self.manual_config_path, self.config_data, self.is_client)
 
     def fetch_defaults(self):
         defaults = self.config_data["defaults"]
@@ -79,7 +80,7 @@ class RemoteConfig:
 
     def update_defaults(self, defaults):
         self.config_data["defaults"] = defaults
-        write_json(self.manual_config_path, self.config_data)
+        write_json(self.manual_config_path, self.config_data, self.is_client)
 
     def fetch_prefer_local(self):
         prefer_local = self.config_data["prefer_local"]
@@ -87,7 +88,7 @@ class RemoteConfig:
 
     def update_prefer_local(self, prefer_local):
         self.config_data["prefer_local"] = prefer_local
-        write_json(self.manual_config_path, self.config_data)
+        write_json(self.manual_config_path, self.config_data, self.is_client)
 
     def fetch_prefer_exceptions(self):
         prefer_exceptions = self.config_data["prefer_exceptions"]
@@ -95,4 +96,4 @@ class RemoteConfig:
 
     def update_prefer_exceptions(self, prefer_exceptions):
         self.config_data["prefer_exceptions"] = prefer_exceptions
-        write_json(self.manual_config_path, self.config_data)
+        write_json(self.manual_config_path, self.config_data, self.is_client)

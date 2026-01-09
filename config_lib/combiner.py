@@ -50,8 +50,9 @@ class CombinerFile(dict):
 class CombinerConfig:
     manual_config_path = "./config/combiner.json"
 
-    def __init__(self) -> None:
-        config_data = read_json(self.manual_config_path)
+    def __init__(self, is_client=False) -> None:
+        self.is_client = is_client
+        config_data = read_json(self.manual_config_path, is_client)
         self.file_data = config_data
         files = {}
         for datum in config_data:
@@ -113,7 +114,10 @@ class CombinerConfig:
         return tmp_json
 
     def write_config(self):
-        write_json(self.manual_config_path, self.file_data)
+        if self.is_client:
+            write_json(self.manual_config_path, self.file_data, client_write=True)
+        else:
+            write_json(self.manual_config_path, self.file_data)
 
     # Operations on the data structure
     def get_time_limit(self, file):

@@ -5,7 +5,8 @@ from lib.config import read_json, write_json
 class AndroidConfig:
     manual_config_path = "./config/android.json"
 
-    def __init__(self) -> None:
+    def __init__(self, is_client=False) -> None:
+        self.is_client = is_client
         pass
 
     def load_config_map(self):
@@ -17,8 +18,8 @@ class AndroidConfig:
         return output_json
 
     def load_apps(self):
-        return read_json(self.manual_config_path)
+        return read_json(self.manual_config_path, self.is_client)
 
     # Take apps, update config...assumes json object, no validation
     def update_config(self, apps):
-        write_json(self.manual_config_path, apps)
+        write_json(self.manual_config_path, apps, self.is_client)

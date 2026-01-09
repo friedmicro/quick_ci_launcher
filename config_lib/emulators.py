@@ -25,8 +25,8 @@ class RegisteredEmulator(dict):
 class EmulatorConfig:
     manual_config_path = "./config/emulators.json"
 
-    def __init__(self):
-        self.config_data = read_json(self.manual_config_path)
+    def __init__(self, is_client=False):
+        self.config_data = read_json(self.manual_config_path, is_client)
         self.emulators = {}
         for emulator_name in self.config_data["registered_emulators"]:
             self.emulators[emulator_name] = RegisteredEmulator(
@@ -34,9 +34,10 @@ class EmulatorConfig:
             )
         self.selected = self.config_data["selected"]
         self.remapping = self.config_data["remapping"]
+        self.is_client = is_client
 
     def write_config(self):
-        write_json(self.manual_config_path, self.config_data)
+        write_json(self.manual_config_path, self.config_data, self.is_client)
 
     def fetch_remapping(self):
         return self.config_data["remapping"]

@@ -6,15 +6,16 @@ from lib.script import get_script_path
 class LocalConfig:
     manual_config = "./config/local.json"
 
-    def __init__(self):
-        self.config_data = read_json(self.manual_config)
+    def __init__(self, is_client=False):
+        self.config_data = read_json(self.manual_config, is_client)
+        self.is_client = is_client
 
     def fetch_local(self):
         return self.config_data
 
     def update_local(self, new_config):
         self.config_data = new_config
-        write_json(self.manual_config, self.config_data)
+        write_json(self.manual_config, self.config_data, self.is_client)
 
     def generate_config_object(self, game):
         script_path, _ = get_script_path(game, "local")

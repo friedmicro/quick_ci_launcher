@@ -39,22 +39,23 @@ class SteamHostConfig(dict):
 class SteamConfig:
     manual_config = "./config/steam.json"
 
-    def __init__(self):
-        self.config_data = read_json(self.manual_config)
+    def __init__(self, is_client):
+        self.config_data = read_json(self.manual_config, is_client)
+        self.is_client = is_client
 
     def fetch_remapping(self):
         return self.config_data["remapping"]
 
     def update_remapping(self, new_remapping):
         self.config_data["remapping"] = new_remapping
-        write_json(self.manual_config, self.config_data)
+        write_json(self.manual_config, self.config_data, self.is_client)
 
     def fetch_exclude(self):
         return self.config_data["exclude"]
 
     def update_exclude(self, new_exclude):
         self.config_data["exclude"] = new_exclude
-        write_json(self.manual_config, self.config_data)
+        write_json(self.manual_config, self.config_data, self.is_client)
 
     def fetch_host(self, host):
         # Let's trust that the user will not directly
@@ -64,4 +65,4 @@ class SteamConfig:
 
     def update_host(self, host, new_host):
         self.config_data[host] = new_host
-        write_json(self.manual_config, self.config_data)
+        write_json(self.manual_config, self.config_data, self.is_client)
