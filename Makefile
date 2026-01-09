@@ -19,6 +19,9 @@ dev-cli:
 dev-scanner:
 	python3 scan_games.py
 
+dev-generator:
+	python3 generators/generator.py
+
 build-test: build
 	./dist/generator/generator
 
