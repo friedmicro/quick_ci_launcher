@@ -69,6 +69,18 @@ class AthenaConfigItem(dict):
                     "os": self.os,
                 }
             )
+            if "skip_assets" in config_data:
+                skip_assets = config_data["skip_assets"]
+            else:
+                skip_assets = False
+            self.skip_assets = skip_assets
+            dictionary_map["skip_assets"] = self.skip_assets
+            if "athena_installed" in config_data:
+                athena_installed = config_data["athena_installed"]
+            else:
+                athena_installed = True
+            self.athena_installed = athena_installed
+            dictionary_map["athena_installed"] = self.athena_installed
         if (
             "remote_client_type" in config_data
             and self.remote_client_type == "moonlight"
@@ -79,6 +91,13 @@ class AthenaConfigItem(dict):
                 {
                     "moonlight_app": self.moonlight_app,
                     "moonlight_machine": self.moonlight_machine,
+                }
+            )
+        if "remote_client_type" in config_data and self.remote_client_type == "rdp":
+            self.user = config_data["user"]
+            dictionary_map.update(
+                {
+                    "user": self.user,
                 }
             )
         if "start_script" in config_data:
@@ -170,11 +189,21 @@ class AthenaConfig:
         item = {"asset": asset_path, "script": ""}
         remote_config = RemoteConfig().fetch_hosts()[host]
         item["ip"] = remote_config.ip
+        if "start_script" in remote_config:
+            item["start_script"] = remote_config.start_script
+        if "stop_script" in remote_config:
+            item["stop_script"] = remote_config.stop_script
         item["live_check"] = remote_config.live_check
-        item["start_script"] = remote_config.start_script
-        item["stop_script"] = remote_config.stop_script
-        item["moonlight_app"] = remote_config.moonlight_app
-        item["moonlight_machine"] = remote_config.moonlight_machine
+        if "moonlight_app" in remote_config:
+            item["moonlight_app"] = remote_config.moonlight_app
+        if "moonlight_machine" in remote_config:
+            item["moonlight_machine"] = remote_config.moonlight_machine
+        if "user" in remote_config:
+            item["user"] = remote_config.user
+        if "skip_assets" in remote_config:
+            item["skip_assets"] = remote_config.skip_assets
+        if "athena_installed" in remote_config:
+            item["athena_installed"] = remote_config.athena_installed
         item["remote_client_type"] = remote_config.remote_client_type
         item["os"] = remote_config.os
         return AthenaConfigItem(item)

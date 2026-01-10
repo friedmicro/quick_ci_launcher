@@ -31,6 +31,21 @@ class RemoteHostConfig(dict):
         if "manual" in config_data:
             self.manual = config_data["manual"]
             dictionary_map["manual"] = self.manual
+        if "skip_assets" in config_data:
+            skip_assets = config_data["skip_assets"]
+        else:
+            skip_assets = False
+        self.skip_assets = skip_assets
+        dictionary_map["skip_assets"] = skip_assets
+        if "athena_installed" in config_data:
+            athena_installed = config_data["athena_installed"]
+        else:
+            athena_installed = True
+        self.athena_installed = athena_installed
+        dictionary_map["athena_installed"] = athena_installed
+        if "user" in config_data:
+            self.user = config_data["user"]
+            dictionary_map["user"] = self.user
         super().__init__(self, **dictionary_map)
 
 

@@ -92,20 +92,22 @@ def launch_program(selected_item: AthenaConfigItem):
         browser_exec += selected_item.web
         subprocess.run([browser_exec], shell=True)
     elif selected_item.is_remote():
-        start_thread = multiprocessing.Process(
-            target=send_start, args=(selected_item.ip,)
-        )
-        start_thread.start()
-        asset_thread = multiprocessing.Process(
-            target=send_asset,
-            args=(
-                selected_item.ip,
-                selected_item.asset,
-                selected_item.os,
-            ),
-        )
-        asset_thread.start()
         remote_config = RemoteConfig()
+        if selected_item.athena_installed:
+            start_thread = multiprocessing.Process(
+                target=send_start, args=(selected_item.ip,)
+            )
+            start_thread.start()
+            if not selected_item.skip_assets:
+                asset_thread = multiprocessing.Process(
+                    target=send_asset,
+                    args=(
+                        selected_item.ip,
+                        selected_item.asset,
+                        selected_item.os,
+                    ),
+                )
+                asset_thread.start()
         if selected_item.remote_client_type == "moonlight":
             moonlight_command = (
                 remote_config.fetch_defaults()["moonlight_client_path"]
@@ -115,7 +117,13 @@ def launch_program(selected_item: AthenaConfigItem):
                 + selected_item.moonlight_app
             )
             subprocess.run([moonlight_command], shell=True)
-        send_stop(selected_item.ip)
+        elif selected_item.remote_client_type == "rdp":
+            rdp_command = remote_config.fetch_defaults()["rdp_client_exec"]
+            rdp_command = rdp_command.replace("{ip}", selected_item.ip)
+            rdp_command = rdp_command.replace("{user}", selected_item.user)
+            subprocess.run([rdp_command], shell=True)
+        if selected_item.athena_installed:
+            send_stop(selected_item.ip)
 
 
 def setup_and_launch(is_logging_time, selected_item):

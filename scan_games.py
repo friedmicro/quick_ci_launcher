@@ -10,6 +10,7 @@ from config_lib.steam import SteamConfig
 from daemon.lib.comm import request_from_daemon
 from daemon.lib.scanner import find_steam_acf_files
 from launcher.launch_preferences import merge_based_on_props
+from lib.os import mkdirp
 from scanners.emulators import parse_roms
 from scanners.lib.config import write_json
 from scanners.lnk import parse_lnk
@@ -61,17 +62,20 @@ for host in remote_config.fetch_remotes_to_load():
     host_name = remote_host.ip
     if "start_script" in remote_host:
         subprocess.run([remote_host.start_script])
-    data = str(request_from_daemon(remote_host.ip, request_body))
-    with open("assets.zip", "wb") as file:
-        file.write(base64.b64decode(data))
-    with zipfile.ZipFile("assets.zip", "r") as zip:
-        target_path = "./data/" + host
-        shutil.rmtree(target_path)
-        zip.extractall(target_path)
+    if remote_host.athena_installed:
+        data = str(request_from_daemon(remote_host.ip, request_body))
+        with open("assets.zip", "wb") as file:
+            file.write(base64.b64decode(data))
+        with zipfile.ZipFile("assets.zip", "r") as zip:
+            target_path = "./data/" + host
+            shutil.rmtree(target_path)
+            zip.extractall(target_path)
+    else:
+        mkdirp("./data/" + host)
     if "manual" in remote_host:
         manual_config = remote_host.manual
         manual_path = "./data/" + host + "/manual"
-        os.mkdir(manual_path)
+        mkdirp(manual_path)
         write_json(manual_path + "/config.json", manual_config)
     if "stop_script" in remote_host:
         subprocess.run([remote_host.stop_script])

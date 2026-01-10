@@ -1,31 +1,32 @@
 {
-    "scan_options": {
-        "skip_steam": false,
-        "skip_shortcut": false
-    },
-    "remotes_to_load": [],
-    "defaults": {
-        "moonlight_client_path": ""
-    },
-    "prefer_local": true,
-    "prefer_exceptions": [],
-    "hosts": ["linux", "windows"],
-    "linux": {
-        "os": "linux",
-        "ip": "",
-        "moonlight_app": "Desktop",
-        "moonlight_machine": "Remote-Linux-Machine",
-        "start_script": "",
-        "stop_script": "",
-        "remote_client_type": "moonlight"
-    },
-    "windows": {
-        "os": "windows",
-        "ip": "",
-        "moonlight_app": "Desktop",
-        "moonlight_machine": "Remote-Windows-Machine",
-        "start_script": "",
-        "stop_script": "",
-        "remote_client_type": "moonlight"
-    }
+  "scan_options": {
+    "skip_steam": false,
+    "skip_shortcut": false
+  },
+  "remotes_to_load": [],
+  "defaults": {
+    "moonlight_client_path": "",
+    "rdp_client_path": ""
+  },
+  "prefer_local": true,
+  "prefer_exceptions": [],
+  "hosts": ["linux", "windows"],
+  "linux": {
+    "os": "linux",
+    "ip": "",
+    "moonlight_app": "Desktop",
+    "moonlight_machine": "Remote-Linux-Machine",
+    "start_script": "",
+    "stop_script": "",
+    "remote_client_type": "moonlight"
+  },
+  "windows": {
+    "os": "windows",
+    "ip": "",
+    "moonlight_app": "Desktop",
+    "moonlight_machine": "Remote-Windows-Machine",
+    "start_script": "",
+    "stop_script": "",
+    "remote_client_type": "moonlight"
+  }
 }
