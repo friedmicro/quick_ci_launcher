@@ -6,7 +6,7 @@
   "remotes_to_load": [],
   "defaults": {
     "moonlight_client_path": "",
-    "rdp_client_path": ""
+    "rdp_client_exec": ""
   },
   "prefer_local": true,
   "prefer_exceptions": [],
