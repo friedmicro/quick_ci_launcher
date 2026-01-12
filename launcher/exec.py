@@ -5,12 +5,12 @@ import platform
 import subprocess
 import time
 
+from lib.config import read_json, write_json
 from config_lib.athena import AthenaConfigItem
 from config_lib.remote import RemoteConfig
 from config_lib.web import WebConfig
-from launcher.config_lib.emulators import EmulatorConfig
+from config_lib.emulators import EmulatorConfig
 from launcher.daemon_comm import send_asset, send_start, send_stop
-from launcher.lib.config import read_json, write_json
 from launcher.time_keep import is_item_time_whitelisted, time_counter_loop
 
 time_configuration = read_json("./config/time_config.json")

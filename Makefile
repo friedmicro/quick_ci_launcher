@@ -1,14 +1,19 @@
+REMOTE_USER = ${ATHENA_REMOTE_USER}
+REMOTE_IP = ${ATHENA_REMOTE_IP}
+REMOTE_PATH = ${ATHENA_REMOTE_PATH}
+
 build: clean
-	pyinstaller ./generators/generator.py
+	pyinstaller generator.py
 	pyinstaller athena-ncurses.py
 	pyinstaller athena-cli.py
 	pyinstaller scan_games.py
+	pyinstaller athena-daemon.py
+	pyinstaller combine.py
+	pyinstaller combine_partials.py
 	mv dist/athena-cli dist/athena
 	mv dist/athena/athena-cli dist/athena/athena
 	mv dist/scan_games dist/scanner
 	mv dist/scanner/scan_games dist/scanner/scanner
-	pyinstaller generators/combine.py
-	pyinstaller generators/combine_partials.py
 
 dev-ncurses:
 	python3 athena-ncurses.py
@@ -27,6 +32,16 @@ build-test: build
 
 build-test-ui: build-test
 	./dist/athena/athena
+
+build-test-daemon:
+	cp daemon/config.json dist/
+	cp initial_config.bin dist/
+
+build-test-unix-daemon: build-test
+	ssh -t -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${REMOTE_USER}@${REMOTE_IP} "sudo rm -rf ${REMOTE_PATH}; sudo mkdir ${REMOTE_PATH}"
+	ssh -t -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${REMOTE_USER}@${REMOTE_IP} "sudo chown -R ${REMOTE_USER}:${REMOTE_USER} ${REMOTE_PATH}"
+	scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r dist/* ${REMOTE_USER}@${REMOTE_IP}:${REMOTE_PATH}
+	ssh -t -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${REMOTE_USER}@${REMOTE_IP} "sudo systemctl restart athena"
 
 virtual-env:
 	pyenv install 3.13.7

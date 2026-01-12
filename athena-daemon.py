@@ -1,9 +1,9 @@
 import socket
 import time
 
-from lib.comm import process_socket_stream, respond_to_client
+from daemon.lib.comm import process_socket_stream, respond_to_client
+from daemon.lib.scanner import download_file
 from lib.os import open_script, write_file
-from lib.scanner import download_file
 
 previous_unix_timestamp = 0
 previous_operation = ""

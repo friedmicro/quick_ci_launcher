@@ -1,8 +1,8 @@
 import sys
 
+from lib.config import read_json
 from config_lib.install import InstallConfig, create_initial_configs
 from launcher.exec import setup_and_launch
-from launcher.lib.config import read_json
 from launcher.time_keep import validate_whitelisted_days
 
 

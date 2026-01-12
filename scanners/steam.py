@@ -1,7 +1,7 @@
 import os
 
-import scanners.lib.script
-import scanners.lib.template
+import lib.script
+import lib.template
 from config_lib.athena import AthenaConfig
 from config_lib.steam import SteamConfig
 
@@ -49,7 +49,7 @@ def form_game_template(game, host, mode):
     if os_in_use == "linux":
         return """{shebang}
 {launch_command} steam://rungameid/{app_id}""".format(
-            shebang=scanners.lib.template.bash(),
+            shebang=lib.template.bash(),
             launch_command=launch_command,
             app_id=game["app_id"],
         )
@@ -60,7 +60,7 @@ def form_game_template(game, host, mode):
     elif os_in_use == "darwin":
         return """{shebang}
 {launch_command} steam://rungameid/{app_id}""".format(
-            shebang=scanners.lib.template.zsh(),
+            shebang=lib.template.zsh(),
             launch_command=launch_command,
             app_id=game["app_id"],
         )
@@ -75,12 +75,12 @@ def parse_acf(host, mode):
         script_template = form_game_template(game, host, mode)
         output_json[game["name"]] = {}
         if host == "local":
-            script_path = scanners.lib.script.write(
+            script_path = lib.script.write(
                 game["app_id"], script_template, "local"
             )
             output_json[game["name"]] = athena_config.generate_script(script_path)
         else:
-            asset_path = scanners.lib.script.write(
+            asset_path = lib.script.write(
                 game["app_id"], script_template, "remote"
             )
             output_json[game["name"]] = athena_config.generate_remote(asset_path, host)

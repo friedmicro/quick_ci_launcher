@@ -5,14 +5,14 @@ import shutil
 import subprocess
 import zipfile
 
+from lib.os import mkdirp
+from lib.config import write_json
 from config_lib.remote import RemoteConfig
 from config_lib.steam import SteamConfig
 from daemon.lib.comm import request_from_daemon
 from daemon.lib.scanner import find_steam_acf_files
 from launcher.launch_preferences import merge_based_on_props
-from lib.os import mkdirp
 from scanners.emulators import parse_roms
-from scanners.lib.config import write_json
 from scanners.lnk import parse_lnk
 from scanners.manual import generate_manual_local, generate_manual_remote
 from scanners.steam import parse_acf

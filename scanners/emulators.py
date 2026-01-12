@@ -1,7 +1,7 @@
 import os
 
 from config_lib.athena import AthenaConfig
-from scanners.config_lib.emulators import EmulatorConfig
+from config_lib.emulators import EmulatorConfig
 
 
 def parse_roms():

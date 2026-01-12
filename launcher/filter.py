@@ -1,7 +1,7 @@
 import subprocess
 
 from config_lib.athena import AthenaConfigItem
-from launcher.lib.remote import ping_ip
+from lib.remote import ping_ip
 
 
 # For now this only supports games, we can assume enterprise\productivity

@@ -6,7 +6,7 @@ After=network.target
 [Service]
 User=friedmicro
 WorkingDirectory=/opt/launcher-daemon
-ExecStart=/opt/launcher-daemon/athena
+ExecStart=/opt/launcher-daemon/athena-daemon
 Type=simple
 
 [Install]

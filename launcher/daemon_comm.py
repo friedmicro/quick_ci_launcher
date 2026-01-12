@@ -1,5 +1,5 @@
 from daemon.lib.comm import send_daemon_message
-from launcher.lib.config import read_text
+from lib.config import read_text
 
 
 def send_stop(host):

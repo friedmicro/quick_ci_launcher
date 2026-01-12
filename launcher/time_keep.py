@@ -5,7 +5,7 @@ import subprocess
 import sys
 import time
 
-from launcher.lib.config import read_json
+from lib.config import read_json
 
 time_configuration = read_json("./config/time_config.json")
 

@@ -4,9 +4,9 @@ import os
 import shutil
 from functools import partial
 
+from lib.config import read_json
 from launcher.exec import setup_and_launch
 from launcher.filter import clear_out_of_scope
-from launcher.lib.config import read_json
 from launcher.time_keep import validate_whitelisted_days
 from config_lib.install import create_initial_configs, InstallConfig
 

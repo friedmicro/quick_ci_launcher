@@ -1,7 +1,7 @@
-import scanners.lib.script
+import lib.script
 from config_lib.athena import AthenaConfig
-from scanners.config_lib.local import LocalConfig
-from scanners.lib.config import read_json
+from config_lib.local import LocalConfig
+from lib.config import read_json
 
 
 def generate_manual_remote(host):
@@ -11,7 +11,7 @@ def generate_manual_remote(host):
     athena_config = AthenaConfig()
     for game in games:
         script_name = games[game].split("/")[-1]
-        asset, _ = scanners.lib.script.get_script_path(script_name, "remote")
+        asset, _ = lib.script.get_script_path(script_name, "remote")
         output_json[game] = athena_config.generate_remote(asset, host)
     return output_json
 
