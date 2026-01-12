@@ -83,4 +83,3 @@ def copy_all_contents(src, dest, set_executable=False, skip_directory=False):
 # mkdir -p: create if does not exist, continue if is does
 def mkdirp(target):
     if not os.path.exists(target):
-        os.mkdir(target)
