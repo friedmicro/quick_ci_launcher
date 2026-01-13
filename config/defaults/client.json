@@ -13,7 +13,7 @@
     "scanner_path": "./dist/scanner/scanner",
     "combine_partials_path": "./dist/combine_partials/combine_partials",
     "combine_path": "./dist/combine/combine",
-    "python_command": "python",
-    "node_command": "node"
+    "python": "python",
+    "node": "node"
   }
 }
