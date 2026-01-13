@@ -69,7 +69,6 @@ def os_path_replace(path):
 # Recursively copy and create tree of directories\files
 def copy_all_contents(src, dest, set_executable=False, skip_directory=False):
     for filename in os.listdir(src):
-        print(filename)
         src_file = src + "/" + filename
         dest_file = dest + "/" + filename
         if not skip_directory and os.path.isdir(src_file):
