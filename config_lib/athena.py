@@ -106,6 +106,9 @@ class AthenaConfigItem(dict):
         if "stop_script" in config_data:
             self.stop_script = config_data["stop_script"]
             dictionary_map["stop_script"] = self.stop_script
+        if "skip_stop_command" in config_data:
+            self.skip_stop_command = config_data["skip_stop_command"]
+            dictionary_map["skip_stop_command"] = self.skip_stop_command
 
     def parse_local_installs(self, config_data, dictionary_map):
         if "local_script" in config_data:
@@ -204,6 +207,8 @@ class AthenaConfig:
             item["skip_assets"] = remote_config.skip_assets
         if "athena_installed" in remote_config:
             item["athena_installed"] = remote_config.athena_installed
+        if "skip_stop_command" in remote_config:
+            item["skip_stop_command"] = remote_config.skip_stop_command
         item["remote_client_type"] = remote_config.remote_client_type
         item["os"] = remote_config.os
         return AthenaConfigItem(item)

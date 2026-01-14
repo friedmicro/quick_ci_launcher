@@ -43,6 +43,12 @@ class RemoteHostConfig(dict):
             athena_installed = True
         self.athena_installed = athena_installed
         dictionary_map["athena_installed"] = athena_installed
+        if "skip_stop_command" in config_data:
+            skip_stop_command = config_data["skip_stop_command"]
+        else:
+            skip_stop_command = False
+        self.skip_stop_command = skip_stop_command
+        dictionary_map["skip_stop_command"] = skip_stop_command
         if "user" in config_data:
             self.user = config_data["user"]
             dictionary_map["user"] = self.user

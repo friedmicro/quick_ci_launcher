@@ -5,13 +5,13 @@ import platform
 import subprocess
 import time
 
-from lib.config import read_json, write_json
 from config_lib.athena import AthenaConfigItem
+from config_lib.emulators import EmulatorConfig
 from config_lib.remote import RemoteConfig
 from config_lib.web import WebConfig
-from config_lib.emulators import EmulatorConfig
 from launcher.daemon_comm import send_asset, send_start, send_stop
 from launcher.time_keep import is_item_time_whitelisted, time_counter_loop
+from lib.config import read_json, write_json
 
 time_configuration = read_json("./config/time_config.json")
 time_ledger = read_json("time.json")
@@ -122,7 +122,7 @@ def launch_program(selected_item: AthenaConfigItem):
             rdp_command = rdp_command.replace("{ip}", selected_item.ip)
             rdp_command = rdp_command.replace("{user}", selected_item.user)
             subprocess.run([rdp_command], shell=True)
-        if selected_item.athena_installed:
+        if selected_item.athena_installed and not selected_item.skip_stop_command:
             send_stop(selected_item.ip)
 
 
