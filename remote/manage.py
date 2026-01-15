@@ -88,3 +88,9 @@ def force_stop_remote(ip):
     subprocess.run([state[ip]["stop_script"]], shell=True)
     del state[ip]
     write_state(state)
+
+
+def remove_tracking(ip):
+    state = load_state()
+    del state[ip]
+    write_state(state)
