@@ -10,6 +10,7 @@ build: clean
 	pyinstaller athena-daemon.py
 	pyinstaller combine.py
 	pyinstaller combine_partials.py
+	pyinstaller athena-client-daemon.py
 	mv dist/athena-cli dist/athena
 	mv dist/athena/athena-cli dist/athena/athena
 	mv dist/scan_games dist/scanner

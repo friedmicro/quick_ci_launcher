@@ -16,6 +16,8 @@ data
 config.json
 !daemon/config.json
 time.json
+state.json
+client-daemon.lock
 
 __pycache__
 
