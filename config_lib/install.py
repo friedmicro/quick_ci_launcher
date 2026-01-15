@@ -2,10 +2,10 @@ import os
 import platform
 import subprocess
 
-from config_lib.steam import SteamConfig
-from lib.os import copy_all_contents
-from daemon.lib.comm import auth
 from config_lib.client import GeneratorConfig
+from config_lib.steam import SteamConfig
+from daemon.lib.comm import auth
+from lib.os import copy_all_contents
 
 
 class InstallConfig:
@@ -17,12 +17,15 @@ class InstallConfig:
 # we assume you are calling this at least once. This can be an empty object.
 # If you don't want to configure anything (or if the user didn't provide it).
 # Force will revert to factory settings!
-def create_initial_configs(install_config: InstallConfig, force: bool = False, skip_generator: bool = False):
+def create_initial_configs(
+    install_config: InstallConfig, force: bool = False, skip_generator: bool = False
+):
     os_in_use = platform.system().lower()
-    print("Assuming this is the first run of athena; creating default configs")
 
     if not force and os.path.exists("./config/client.json"):
         return
+
+    print("Assuming this is the first run of athena; creating default configs")
 
     copy_all_contents("./config/defaults", "./config", False, True)
 
