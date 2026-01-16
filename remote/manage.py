@@ -85,9 +85,10 @@ def parse_state():
 # For if a user wants to end the remote immediately; ex: in a script
 def force_stop_remote(ip):
     state = load_state()
-    subprocess.run([state[ip]["stop_script"]], shell=True)
+    stop_script = state[ip]["stop_script"]
     del state[ip]
     write_state(state)
+    subprocess.run([stop_script], shell=True)
 
 
 def remove_tracking(ip):
