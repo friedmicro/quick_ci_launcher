@@ -4,6 +4,7 @@ import subprocess
 from config_lib.athena import AthenaConfigItem
 from config_lib.remote import RemoteConfig
 from launcher.daemon_comm import send_asset, send_start, send_stop
+from lib.remote import ping_ip
 
 
 def daemon_start(selected_item: AthenaConfigItem):
@@ -25,7 +26,10 @@ def daemon_start(selected_item: AthenaConfigItem):
 
 
 def daemon_stop(selected_item: AthenaConfigItem):
-    if selected_item.athena_installed and not selected_item.skip_stop_command:
+    if selected_item.athena_installed:
+        if selected_item.skip_stop_command:
+            if not ping_ip(selected_item.ip):
+                return
         send_stop(selected_item.ip)
 
 
