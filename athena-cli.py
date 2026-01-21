@@ -1,5 +1,8 @@
+# CLI for users who want to use a command line interface
+# also used by GUI tools.
 import sys
 
+from config_cli.config import config
 from config_lib.install import InstallConfig, create_initial_configs
 from launcher.exec import setup_and_launch
 from launcher.time_keep import validate_whitelisted_days
@@ -30,21 +33,25 @@ def find_program_args(all_programs, program_to_call):
     return None
 
 
-def process_user_input():
+def start_program():
     all_programs = process_config_data()
+    program_to_call = sys.argv[2]
+    program_args = find_program_args(all_programs, program_to_call)
+
+    is_logging_time = False
+    if program_args is None:
+        sys.exit(42)
+    if "time_limit" in program_args:
+        if program_args["time_limit"]:
+            validate_whitelisted_days()
+            is_logging_time = True
+    setup_and_launch(is_logging_time, program_args)
+
+
+def process_user_input():
     launch_option = sys.argv[1]
     if launch_option == "start":
-        program_to_call = sys.argv[2]
-        program_args = find_program_args(all_programs, program_to_call)
-
-        is_logging_time = False
-        if program_args is None:
-            sys.exit(42)
-        if "time_limit" in program_args:
-            if program_args["time_limit"]:
-                validate_whitelisted_days()
-                is_logging_time = True
-        setup_and_launch(is_logging_time, program_args)
+        start_program()
     elif launch_option == "remote":
         remote_command = sys.argv[2]
         host_to_control = sys.argv[3]
@@ -54,8 +61,10 @@ def process_user_input():
             remove_tracking(host_to_control)
         else:
             sys.exit(42)
+    elif launch_option == "config":
+        config(sys.argv[2:])
     else:
-        sys.exit(42)
+        start_program()
 
 
 create_initial_configs(InstallConfig())

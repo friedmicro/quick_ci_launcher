@@ -70,3 +70,24 @@ class EmulatorConfig:
         ]
         self.config_data["exec"][name] = emulator_config["exec"]
         self.write_config()
+
+    def add_emulator(self, name):
+        self.emulators[name] = {
+            "paths": [],
+            "scan": [],
+            "extensions": [],
+            "is_single_file": False,
+            "truncate_sequence": False,
+            "exec": "",
+        }
+        self.config_data["paths"][name] = self.emulators[name]["paths"]
+        self.config_data["scan"][name] = self.emulators[name]["scan"]
+        self.config_data["extensions"][name] = self.emulators[name]["extensions"]
+        self.config_data["is_single_file"][name] = self.emulators[name][
+            "is_single_file"
+        ]
+        self.config_data["truncate_sequence"][name] = self.emulators[name][
+            "truncate_sequence"
+        ]
+        self.config_data["exec"][name] = self.emulators[name]["exec"]
+        self.write_config()
