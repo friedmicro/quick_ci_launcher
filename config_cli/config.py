@@ -1,5 +1,6 @@
 from config_cli.android import android
 from config_cli.athena import athena
+from config_cli.client import client
 
 
 def config(params: list[str]):
@@ -10,7 +11,7 @@ def config(params: list[str]):
         case "athena":
             athena(params[1:])
         case "client":
-            pass
+            client(params[1:])
         case "combiner":
             pass
         case "emulators":
