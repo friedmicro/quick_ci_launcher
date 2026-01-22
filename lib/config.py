@@ -48,5 +48,8 @@ def write_json(path, data, client_write=False):
     if client_write:
         client_id, _ = fetch_client()
         path = fetch_client_config_path(path, client_id)
+        client_directory = "/".join(path.split("/")[:-1])
+        if not os.path.exists(client_directory):
+            os.mkdir(client_directory)
     with open(path, "w") as outfile:
         outfile.write(json.dumps(data, indent=4))
