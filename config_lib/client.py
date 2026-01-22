@@ -56,7 +56,7 @@ class ClientConfig:
     def fetch_generator(self):
         return read_json(self.manual_config_path)["generator"]
 
-    def update_generator(self, gen_config: GeneratorConfig):
+    def update_generator(self, gen_config):
         full_client_config = read_json(self.manual_config_path)
         gen_config.update_hidden_config()
         full_client_config["generator"] = gen_config
