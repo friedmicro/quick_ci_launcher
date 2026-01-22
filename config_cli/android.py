@@ -10,7 +10,7 @@ def android(params):
         case "load_apps":
             print(json.dumps(android_config.load_apps()))
         case "update_config":
-            apps = params[1]
+            apps = json.loads(params[1])
             android_config.update_config(apps)
             print("Config updated successfully")
         case _:
