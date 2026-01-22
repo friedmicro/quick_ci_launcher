@@ -1,12 +1,13 @@
 import json
 
 from config_lib.athena import AthenaConfig
+from lib.cli import parse_params
 
 
 def athena(params):
+    operation, _, _ = parse_params(params, argument_is_json=True)
     athena_config = AthenaConfig()
-    func = params[0]
-    match func:
+    match operation:
         case "fetch_config":
             print(json.dumps(athena_config.fetch_config()))
         case _:

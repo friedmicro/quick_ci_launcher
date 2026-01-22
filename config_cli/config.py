@@ -5,13 +5,14 @@ from config_cli.client import client
 
 def config(params: list[str]):
     config_class = str(params[0])
+    args = params[1:]
     match config_class:
         case "android":
-            android(params[1:])
+            android(args)
         case "athena":
-            athena(params[1:])
+            athena(args)
         case "client":
-            client(params[1:])
+            client(args)
         case "combiner":
             pass
         case "emulators":
