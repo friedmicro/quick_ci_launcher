@@ -33,9 +33,8 @@ def find_program_args(all_programs, program_to_call):
     return None
 
 
-def start_program():
+def start_program(program_to_call):
     all_programs = process_config_data()
-    program_to_call = sys.argv[2]
     program_args = find_program_args(all_programs, program_to_call)
 
     is_logging_time = False
@@ -51,7 +50,8 @@ def start_program():
 def process_user_input():
     launch_option = sys.argv[1]
     if launch_option == "start":
-        start_program()
+        program_to_call = sys.argv[2]
+        start_program(program_to_call)
     elif launch_option == "remote":
         remote_command = sys.argv[2]
         host_to_control = sys.argv[3]
@@ -64,7 +64,8 @@ def process_user_input():
     elif launch_option == "config":
         config(sys.argv[2:])
     else:
-        start_program()
+        program_to_call = sys.argv[1]
+        start_program(program_to_call)
 
 
 create_initial_configs(InstallConfig())
