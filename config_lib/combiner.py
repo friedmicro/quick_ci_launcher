@@ -158,3 +158,10 @@ class CombinerConfig:
             "time_schedule": [],
         }
         self.write_config()
+
+    def fetch_files(self):
+        key_list = []
+        keys = self.file_data.keys()
+        for key in keys:
+            key_list.append(key)
+        return key_list
