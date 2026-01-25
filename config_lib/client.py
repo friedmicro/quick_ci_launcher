@@ -17,6 +17,7 @@ class GeneratorConfig(dict):
         self.scanner_path = generator_config["scanner_path"]
         self.combine_partials_path = generator_config["combine_partials_path"]
         self.combine_path = generator_config["combine_path"]
+        self.generator_path = generator_config["generator_path"]
         self.python = generator_config["python"]
         self.node = generator_config["node"]
         dictionary_map = {
@@ -26,6 +27,7 @@ class GeneratorConfig(dict):
             "scanner_path": self.scanner_path,
             "combine_partials_path": self.combine_partials_path,
             "combine_path": self.combine_path,
+            "generator_path": self.generator_path,
             "python": self.python,
             "node": self.node,
         }

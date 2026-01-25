@@ -1,9 +1,12 @@
 # CLI for users who want to use a command line interface
 # also used by GUI tools.
+import subprocess
 import sys
 
 from config_cli.config import config
+from config_lib.client import GeneratorConfig
 from config_lib.install import InstallConfig, create_initial_configs
+from daemon.lib.comm import auth
 from launcher.exec import setup_and_launch
 from launcher.time_keep import validate_whitelisted_days
 from lib.config import read_json
@@ -63,6 +66,11 @@ def process_user_input():
             sys.exit(42)
     elif launch_option == "config":
         config(sys.argv[2:])
+    elif launch_option == "gen":
+        generator_config = GeneratorConfig()
+        subprocess.run(generator_config.generator_path)
+    elif launch_option == "auth":
+        auth()
     else:
         program_to_call = sys.argv[1]
         start_program(program_to_call)
