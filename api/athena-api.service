@@ -1,12 +1,12 @@
 [Unit]
-Description=Athena Remote Daemon
+Description=Athena API Daemon
 Requires=network.target
 After=network.target
 
 [Service]
 User=friedmicro
-WorkingDirectory=/opt/launcher-daemon
-ExecStart=/opt/launcher-daemon/athena-daemon
+WorkingDirectory=/opt/athena
+ExecStart=/opt/athena/athena-api/athena-api
 Type=simple
 
 [Install]
