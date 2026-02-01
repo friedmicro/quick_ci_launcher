@@ -6,6 +6,10 @@ from config_cli.emulators import emulators
 from config_cli.local import local
 from config_cli.manual import manual
 from config_cli.overrides import overrides
+from config_cli.remote import remote
+from config_cli.steam import steam
+from config_cli.web import web
+from config_cli.windows_games import windows_games
 
 
 def config(params: list[str]):
@@ -29,12 +33,12 @@ def config(params: list[str]):
         case "overrides":
             overrides(args)
         case "remote":
-            pass
+            remote(args)
         case "steam":
-            pass
+            steam(args)
         case "web":
-            pass
+            web(args)
         case "windows_games":
-            pass
+            windows_games(args)
         case _:
             print("Not a valid option")
