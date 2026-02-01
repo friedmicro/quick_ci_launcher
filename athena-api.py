@@ -2,9 +2,10 @@ from flask import Flask, jsonify, request
 
 # Import UUID authentication
 from api.auth import require_uuid_auth
+from config_lib.athena import AthenaConfig
 
 # Import blueprints
-from config_flask import (
+from config_rest import (
     android,
     athena,
     client,
@@ -18,7 +19,6 @@ from config_flask import (
     web,
     windows_games,
 )
-from config_lib.athena import AthenaConfig
 from launcher.exec import headless_start, headless_stop
 
 app = Flask(__name__)
