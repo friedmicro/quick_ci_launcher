@@ -1,5 +1,8 @@
 from flask import Flask, jsonify, request
 
+# Import UUID authentication
+from api.auth import require_uuid_auth
+
 # Import blueprints
 from config_flask import (
     android,
@@ -46,6 +49,7 @@ def index():
 
 
 @app.route("/api/config/<domain>/<operation>", methods=["GET", "POST"])
+@require_uuid_auth()
 def handle_config(domain, operation):
     try:
         match domain:
@@ -81,6 +85,7 @@ def handle_config(domain, operation):
 
 
 @app.route("/api/exec/<operation>", methods=["POST"])
+@require_uuid_auth()
 def handle_exec(operation):
     try:
         data = request.get_json()
