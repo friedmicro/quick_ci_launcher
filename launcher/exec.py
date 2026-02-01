@@ -10,7 +10,7 @@ from config_lib.emulators import EmulatorConfig
 from config_lib.web import WebConfig
 from launcher.time_keep import is_item_time_whitelisted, time_counter_loop
 from lib.config import read_json, write_json
-from remote.exec import execute_client_remote
+from remote.exec import daemon_start, daemon_stop, execute_client_remote
 from remote.manage import start_remote, stop_remote
 
 time_configuration = read_json("./config/time_config.json")
@@ -106,3 +106,15 @@ def setup_and_launch(is_logging_time, selected_item):
     else:
         launch_program(selected_item)
     stop_remote(selected_item)
+
+
+def headless_start(selected_item):
+    selected_item = AthenaConfigItem(selected_item)
+    start_remote(selected_item)
+    daemon_start(selected_item)
+
+
+def headless_stop(selected_item):
+    selected_item = AthenaConfigItem(selected_item)
+    stop_remote(selected_item)
+    daemon_stop(selected_item)

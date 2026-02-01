@@ -11,6 +11,7 @@ build: clean
 	pyinstaller combine.py
 	pyinstaller combine_partials.py
 	pyinstaller athena-client-daemon.py
+	pyinstaller athena-api.py
 	mv dist/athena-cli dist/athena
 	mv dist/athena/athena-cli dist/athena/athena
 	mv dist/scan_games dist/scanner
@@ -52,6 +53,7 @@ deps:
 	pip install pyinstaller
 	pip install cryptography
 	pip install LnkParse3
+	pip install flask
 
 dep-windows: deps
 	pip install windows-curses
