@@ -2,6 +2,10 @@ from config_cli.android import android
 from config_cli.athena import athena
 from config_cli.client import client
 from config_cli.combiner import combiner
+from config_cli.emulators import emulators
+from config_cli.local import local
+from config_cli.manual import manual
+from config_cli.overrides import overrides
 
 
 def config(params: list[str]):
@@ -17,13 +21,13 @@ def config(params: list[str]):
         case "combiner":
             combiner(args)
         case "emulators":
-            pass
+            emulators(args)
         case "local":
-            pass
+            local(args)
         case "manual":
-            pass
+            manual(args)
         case "overrides":
-            pass
+            overrides(args)
         case "remote":
             pass
         case "steam":
