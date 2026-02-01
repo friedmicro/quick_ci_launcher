@@ -1,3 +1,4 @@
+.ONESHELL:
 REMOTE_USER = ${ATHENA_REMOTE_USER}
 REMOTE_IP = ${ATHENA_REMOTE_IP}
 REMOTE_PATH = ${ATHENA_REMOTE_PATH}
@@ -16,6 +17,11 @@ build: clean
 	mv dist/athena/athena-cli dist/athena/athena
 	mv dist/scan_games dist/scanner
 	mv dist/scanner/scan_games dist/scanner/scanner
+	cp -r dist/ desktop-gui/tools
+	cd desktop-gui
+	npm run make
+	npm run package
+	cd ..
 
 dev-ncurses:
 	python3 athena-ncurses.py
@@ -31,6 +37,9 @@ dev-generator:
 
 dev-api:
 	python3 athena-api.py
+
+dev-desktop-gui:
+	electron desktop-gui/main.js
 
 build-test: build
 	./dist/generator/generator
@@ -57,6 +66,9 @@ deps:
 	pip install cryptography
 	pip install LnkParse3
 	pip install flask
+	cd desktop-gui
+	npm install
+	cd ..
 
 dep-windows: deps
 	pip install windows-curses
@@ -64,3 +76,5 @@ dep-windows: deps
 clean:
 	rm -rf build
 	rm -rf dist
+	rm -rf desktop-gui/out
+	rm -rf desktop-gui/tools

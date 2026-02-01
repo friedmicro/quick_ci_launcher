@@ -25,3 +25,7 @@ initial_config.bin
 
 config/*.json
 config/clients/*
+
+node_modules
+out
+desktop-gui/tools
