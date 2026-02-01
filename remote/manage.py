@@ -1,5 +1,6 @@
 import copy
 import subprocess
+import sys
 import time
 from pathlib import Path
 
@@ -83,9 +84,16 @@ def parse_state():
                 write_state(state_copy)
 
 
+def validate_ip(state, ip):
+    if ip not in state:
+        print("IP not found in state")
+        sys.exit(0)
+
+
 # For if a user wants to end the remote immediately; ex: in a script
 def force_stop_remote(ip):
     state = load_state()
+    validate_ip(state, ip)
     stop_script = state[ip]["stop_script"]
     del state[ip]
     write_state(state)
@@ -94,5 +102,6 @@ def force_stop_remote(ip):
 
 def remove_tracking(ip):
     state = load_state()
+    validate_ip(state, ip)
     del state[ip]
     write_state(state)
