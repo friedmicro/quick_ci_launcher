@@ -91,9 +91,11 @@ def handle_exec(operation):
         data = request.get_json()
         match operation:
             case "start":
-                return headless_start(data["selected_item"])
+                headless_start(data["selected_item"])
+                return jsonify({"message": "Started successfully"}), 200
             case "stop":
-                return headless_stop(data["selected_item"])
+                headless_stop(data["selected_item"])
+                return jsonify({"message": "Stopped successfully"}), 200
             case _:
                 return jsonify({"error": "Invalid operation"}), 400
 
