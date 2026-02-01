@@ -29,6 +29,9 @@ dev-scanner:
 dev-generator:
 	python3 generators/generator.py
 
+dev-api:
+	python3 athena-api.py
+
 build-test: build
 	./dist/generator/generator
 
