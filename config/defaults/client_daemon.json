@@ -1,0 +1,5 @@
+{
+  "poll_time": 60,
+  "time_per_shutdown": 300,
+  "state_path": "./state.json"
+}

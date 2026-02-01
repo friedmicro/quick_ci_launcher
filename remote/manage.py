@@ -6,10 +6,11 @@ from pathlib import Path
 from config_lib.athena import AthenaConfigItem
 from lib.config import read_json, write_json
 
+config = read_json("./config/client_daemon.json")
+
 daemon_lock = "./client-daemon.lock"
-state_file = "./state.json"
-# By default keep the remote on for 5 minutes
-time_per_shutdown = 60 * 5
+state_file = config["state_path"]
+time_per_shutdown = config["time_per_shutdown"]
 
 
 # Add an indicator so that clients know if the client daemon is installed
