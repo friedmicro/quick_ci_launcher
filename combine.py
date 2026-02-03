@@ -8,6 +8,8 @@ from config_lib.manual import ManualConfig
 def process_partials(dictionary, browser_json_copy):
     for key in dictionary:
         config_item = AthenaConfigItem(dictionary[key])
+        if not config_item.is_partial() or "script" in config_item:
+            continue
         if config_item.is_partial():
             with open(dictionary[key]["partial"], "r") as file:
                 partial_json = json.load(file)
