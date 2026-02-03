@@ -25,6 +25,7 @@ def clear_out_of_scope(menu_topology):
         elif athena_item.is_layer():
             if athena_item.is_waydroid() and waydroid_not_installed:
                 continue
+            games[game] = menu_topology["Games"][game]
         elif athena_item.has_ip():
             if athena_item.live_check in ips_offline:
                 continue
