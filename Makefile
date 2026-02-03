@@ -4,15 +4,7 @@ REMOTE_IP = ${ATHENA_REMOTE_IP}
 REMOTE_PATH = ${ATHENA_REMOTE_PATH}
 
 build: clean
-	pyinstaller generator.py
-	pyinstaller athena-ncurses.py
-	pyinstaller athena-cli.py
-	pyinstaller scan_games.py
-	pyinstaller athena-daemon.py
-	pyinstaller combine.py
-	pyinstaller combine_partials.py
-	pyinstaller athena-client-daemon.py
-	pyinstaller athena-api.py
+	pyinstaller athena-shared.spec
 	mv dist/athena-cli dist/athena
 	mv dist/athena/athena-cli dist/athena/athena
 	mv dist/scan_games dist/scanner
