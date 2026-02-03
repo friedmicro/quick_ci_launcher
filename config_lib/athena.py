@@ -81,6 +81,16 @@ class AthenaConfigItem(dict):
                 athena_installed = True
             self.athena_installed = athena_installed
             dictionary_map["athena_installed"] = self.athena_installed
+            if "force_sync" in config_data:
+                self.force_sync = config_data["force_sync"]
+            else:
+                self.force_sync = False
+            if "skip_daemon" in config_data:
+                self.skip_daemon = config_data["skip_daemon"]
+            else:
+                self.skip_daemon = False
+            dictionary_map["skip_daemon"] = self.skip_daemon
+            dictionary_map["force_sync"] = self.force_sync
         if (
             "remote_client_type" in config_data
             and self.remote_client_type == "moonlight"

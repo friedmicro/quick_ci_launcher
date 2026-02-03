@@ -5,6 +5,7 @@ import time
 from pathlib import Path
 
 from config_lib.athena import AthenaConfigItem
+from config_lib.client import GeneratorConfig
 from lib.config import read_json, write_json
 
 config = read_json("./config/client_daemon.json")
@@ -51,6 +52,7 @@ def start_remote(selected_item: AthenaConfigItem):
             "operation": "start",
             "start_script": selected_item.start_script,
             "stop_script": selected_item.stop_script,
+            "force_sync": selected_item.force_sync,
         }
         subprocess.run([selected_item.start_script], shell=True)
     else:
@@ -60,8 +62,11 @@ def start_remote(selected_item: AthenaConfigItem):
 
 
 def stop_remote(selected_item: AthenaConfigItem):
-    if should_execute_as_client(selected_item):
+    if should_execute_as_client(selected_item) or selected_item.skip_daemon:
         if selected_item.has_stop_script():
+            if selected_item.force_sync:
+                generator_config = GeneratorConfig()
+                subprocess.run(generator_config.generator_path)
             subprocess.run([selected_item.stop_script], shell=True)
         return
     state = load_state()
@@ -80,6 +85,9 @@ def parse_state():
         if current_time - last_action_time > time_per_shutdown:
             if host_info["operation"] == "stop":
                 del state_copy[host]
+                if host_info["force_sync"]:
+                    generator_config = GeneratorConfig()
+                    subprocess.run(generator_config.generator_path)
                 subprocess.run([host_info["stop_script"]], shell=True)
                 write_state(state_copy)
 
