@@ -49,7 +49,7 @@ def move_steam_files_to_upload(path, mode="native"):
 
 def move_shortcut_files_to_upload(path):
     files = find_shortcut_files(path)
-    move_to_upload_location(files, "native")
+    move_to_upload_location(files, "lnk")
 
 
 def move_to_upload(process_steam, process_shortcut):
