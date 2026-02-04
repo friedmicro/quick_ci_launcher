@@ -4,6 +4,7 @@ import lib.script
 import lib.template
 from config_lib.athena import AthenaConfig
 from config_lib.steam import SteamConfig
+from config_lib.windows_games import WindowsGamesConfig
 
 steam_config = SteamConfig()
 
@@ -41,6 +42,7 @@ def locate_games(steam_location):
 
 
 output_json = {}
+windows_games = WindowsGamesConfig()
 
 
 def form_game_template(game, host, mode):
@@ -54,7 +56,9 @@ def form_game_template(game, host, mode):
             app_id=game["app_id"],
         )
     elif os_in_use == "windows":
-        return """{launch_command} steam://rungameid/{app_id}""".format(
+        if game["name"] in windows_games.fetch_open_steam_direct():
+            return f'"{windows_games.fetch_steam_path()}"'
+        return """\"{launch_command}\" steam://rungameid/{app_id}""".format(
             launch_command=launch_command, app_id=game["app_id"]
         )
     elif os_in_use == "darwin":
@@ -75,14 +79,10 @@ def parse_acf(host, mode):
         script_template = form_game_template(game, host, mode)
         output_json[game["name"]] = {}
         if host == "local":
-            script_path = lib.script.write(
-                game["app_id"], script_template, "local"
-            )
+            script_path = lib.script.write(game["app_id"], script_template, "local")
             output_json[game["name"]] = athena_config.generate_script(script_path)
         else:
-            asset_path = lib.script.write(
-                game["app_id"], script_template, "remote"
-            )
+            asset_path = lib.script.write(game["app_id"], script_template, "remote")
             output_json[game["name"]] = athena_config.generate_remote(asset_path, host)
 
     return output_json
