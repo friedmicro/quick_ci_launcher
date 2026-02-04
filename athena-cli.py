@@ -12,12 +12,13 @@ from launcher.time_keep import validate_whitelisted_days
 from lib.config import read_json
 from remote.manage import force_stop_remote, remove_tracking
 
+all_programs = []
+
 
 def flatten_config(config):
-    all_programs = []
     for entry in config:
         if "script" not in config[entry]:
-            return flatten_config(config[entry])
+            flatten_config(config[entry])
         else:
             config[entry]["name"] = entry
             all_programs.append(config[entry])
