@@ -22,7 +22,7 @@ Please setup your environment according the installation guide for your respecti
 ### Types of contributions not accepted
 * Breaking changes to existing public APIs: this includes rest APIs, CLI interfaces, utility libraries, data models, and config settings.
 * Untested or highly brittle features: if a feature cannot be reliably enabled it won't be loaded into the application. Exceptions to this are if the feature if being broken across multiple PRs.
-* Unplanned features: we do want to include features that do not match the scope of project; if you would like to have a feature added to the planned features list, please open an issue so the maintainers can discuss it.
+* Unplanned features: we do not want to include features that do not match the scope of project; if you would like to have a feature added to the planned features list, please open an issue so the maintainers can discuss it.
 
 ### Planned Features
 * Configuration GUI: A graphical user interface for managing configuration settings.
