@@ -28,3 +28,6 @@ config/clients/*
 node_modules
 out
 desktop-gui/tools
+
+*.spec
+!athena-shared.spec
