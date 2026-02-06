@@ -55,6 +55,10 @@ dev-api:
 dev-desktop-gui:
 	electron desktop-gui/main.js
 
+dev-npm-desktop-gui:
+	cd desktop-gui
+	npm run start
+
 build-desktop-gui:
 	cp -r dist/ desktop-gui/tools
 	rm -rf desktop-gui/tools/athena-ncurses
