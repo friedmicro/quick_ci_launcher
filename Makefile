@@ -21,20 +21,49 @@ build: clean
 dev-ncurses:
 	python3 athena-ncurses.py
 
+build-ncurses:
+	pyinstaller athena-ncurses.py
+
 dev-cli:
 	python3 athena-cli.py
+
+build-cli:
+	pyinstaller athena-cli.py
+	mv dist/athena-cli dist/athena
+	mv dist/athena/athena-cli dist/athena/athena
 
 dev-scanner:
 	python3 scan_games.py
 
+build-scanner:
+	pyinstaller scan_games.py
+	mv dist/scan_games dist/scanner
+	mv dist/scanner/scan_games dist/scanner/scanner
+
 dev-generator:
 	python3 generators/generator.py
+
+build-generator:
+	pyinstaller generators/generator.py
 
 dev-api:
 	python3 athena-api.py
 
+dev-api:
+	pyinstaller athena-api.py
+
 dev-desktop-gui:
 	electron desktop-gui/main.js
+
+build-desktop-gui:
+	cp -r dist/ desktop-gui/tools
+	rm -rf desktop-gui/tools/athena-ncurses
+	rm -rf desktop-gui/tools/athena-client-daemon
+	rm -rf desktop-gui/tools/athena-daemon
+	cd desktop-gui
+	npm run make
+	npm run package
+	cd ..
 
 build-test: build
 	./dist/generator/generator
